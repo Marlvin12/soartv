@@ -44,7 +44,8 @@ export default function VoiceSurvey({ onComplete, onSkip, onSwitchToCards }: Pro
   const [visible, setVisible]     = useState(false)
 
   const audioRef      = useRef<HTMLAudioElement | null>(null)
-  const speakIdRef    = useRef(0)
+  const abortRef      = useRef<AbortController | null>(null)
+  const speakGenRef   = useRef(0)   // increments on every new speak; guards post-fetch state
   const finalRef      = useRef<Answers>({ firstPick: '', mood: '', intensity: '' })
 
   /* Backdrop slides */
@@ -70,27 +71,47 @@ export default function VoiceSurvey({ onComplete, onSkip, onSwitchToCards }: Pro
 
   /* ElevenLabs speak — cancellation-safe */
   const speak = useCallback(async (text: string, onEnd?: () => void) => {
-    const id = ++speakIdRef.current
+    // Cancel any in-flight fetch and playing audio
+    abortRef.current?.abort()
     audioRef.current?.pause()
     audioRef.current = null
+
+    const gen = ++speakGenRef.current
+    const controller = new AbortController()
+    abortRef.current = controller
+
     setSpeaking(true)
     try {
-      const res = await fetch(`/api/elevenlabs?text=${encodeURIComponent(text)}`)
-      if (id !== speakIdRef.current) return
+      const res = await fetch(`/api/elevenlabs?text=${encodeURIComponent(text)}`, {
+        signal: controller.signal,
+      })
+      if (gen !== speakGenRef.current) return
       if (res.status === 204 || !res.ok) { setSpeaking(false); onEnd?.(); return }
+
       const blob  = await res.blob()
-      if (id !== speakIdRef.current) return
+      if (gen !== speakGenRef.current) return
+
       const url   = URL.createObjectURL(blob)
       const audio = new Audio(url)
-      audioRef.current = audio
+      audioRef.current  = audio
       audio.onended = () => {
-        if (id !== speakIdRef.current) return
-        setSpeaking(false); URL.revokeObjectURL(url); onEnd?.()
+        if (gen !== speakGenRef.current) return
+        setSpeaking(false)
+        URL.revokeObjectURL(url)
+        onEnd?.()
       }
-      audio.onerror = () => { if (id === speakIdRef.current) { setSpeaking(false); onEnd?.() } }
-      audio.play()
-    } catch {
-      if (id === speakIdRef.current) { setSpeaking(false); onEnd?.() }
+      audio.onerror = () => {
+        if (gen !== speakGenRef.current) return
+        setSpeaking(false)
+        URL.revokeObjectURL(url)
+        onEnd?.()
+      }
+      // Await play() so a rejection (autoplay policy, mobile) is caught below
+      await audio.play()
+    } catch (err) {
+      // AbortError = intentional cancellation; don't touch state
+      if ((err as Error).name === 'AbortError') return
+      if (gen === speakGenRef.current) { setSpeaking(false); onEnd?.() }
     }
   }, [])
 
@@ -98,7 +119,7 @@ export default function VoiceSurvey({ onComplete, onSkip, onSwitchToCards }: Pro
   useEffect(() => {
     speak(SCRIPTS[step])
     return () => {
-      speakIdRef.current++
+      abortRef.current?.abort()
       audioRef.current?.pause()
       audioRef.current = null
       setSpeaking(false)
@@ -116,9 +137,6 @@ export default function VoiceSurvey({ onComplete, onSkip, onSwitchToCards }: Pro
       /* Final step: voice responds with summary, then route */
       finalRef.current = next
       setFinishing(true)
-      speakIdRef.current++         // cancel current step audio
-      audioRef.current?.pause()
-      audioRef.current = null
       speak(buildSummary(next), () => onComplete(finalRef.current))
     }
   }
