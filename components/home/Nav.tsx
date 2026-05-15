@@ -16,7 +16,7 @@ export default function Nav({ onRetake }: Props) {
       </div>
       <div className="nav-right">
         <button className="retake-pill" onClick={onRetake}>
-          <Icon name="refresh" size={12}/> Retake mood
+          <Icon name="refresh" size={12}/><span className="retake-label"> Retake mood</span>
         </button>
         <button className="icon-btn"><Icon name="search" size={15}/></button>
         <button className="icon-btn"><Icon name="cast" size={15}/></button>
