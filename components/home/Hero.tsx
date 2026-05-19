@@ -2,15 +2,32 @@
 
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import Icon from '@/components/Icon'
 import { MOOD_COPY } from '@/lib/catalog'
 import { titleGradient } from '@/lib/utils'
+import { toWatchPath } from '@/lib/urls'
+import { useWatchlist } from '@/context/WatchlistContext'
+import TrailerModal from '@/components/player/TrailerModal'
+import AuthModal from '@/components/auth/AuthModal'
 import type { MediaItem } from '@/types'
 
 interface Props { item: MediaItem; mood: string }
 
 export default function Hero({ item, mood }: Props) {
-  const [videoKey, setVideoKey] = useState<string | null>(null)
+  const { watchlistIds, toggleWatchlist } = useWatchlist()
+  const [videoKey,    setVideoKey]    = useState<string | null>(null)
+  const [trailerOpen, setTrailerOpen] = useState(false)
+  const [authOpen,    setAuthOpen]    = useState(false)
+
+  const inWatchlist = watchlistIds.has(item.id)
+
+  const handleWatchlist = () => {
+    toggleWatchlist(
+      { mediaId: item.id, title: item.title, imageUrl: item.imageUrl, type: item.type },
+      () => setAuthOpen(true),
+    )
+  }
 
   useEffect(() => {
     const numId = item.id.replace(/^(m|tv)-/, '')
@@ -83,11 +100,36 @@ export default function Hero({ item, mood }: Props) {
         </div>
         <p className="hero-desc">{(item.desc || item.sub || '').slice(0, 220)}</p>
         <div className="hero-actions">
-          <button className="btn-primary"><Icon name="play" size={14}/> Stream Now</button>
-          <button className="btn-secondary">Watch Trailer</button>
-          <button className="btn-secondary"><Icon name="plus" size={14}/></button>
+          <Link
+            href={toWatchPath(item.type, item.id.replace(/^(m|tv)-/, ''), item.title)}
+            className="btn-primary"
+          >
+            <Icon name="play" size={14}/> Stream Now
+          </Link>
+          {videoKey && (
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={() => setTrailerOpen(true)}
+            >
+              Watch Trailer
+            </button>
+          )}
+          <button
+            type="button"
+            className="btn-secondary"
+            onClick={handleWatchlist}
+            aria-label={inWatchlist ? 'Remove from watchlist' : 'Add to watchlist'}
+            title={inWatchlist ? 'In your watchlist' : 'Add to watchlist'}
+            style={inWatchlist ? { background: 'rgba(180,167,255,0.22)', borderColor: 'rgba(180,167,255,0.45)', color: '#b4a7ff' } : undefined}
+          >
+            <Icon name={inWatchlist ? 'check' : 'plus'} size={14}/>
+          </button>
         </div>
       </div>
+
+      {trailerOpen && <TrailerModal videoKey={videoKey} title={item.title} onClose={() => setTrailerOpen(false)} />}
+      <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} />
     </div>
   )
 }

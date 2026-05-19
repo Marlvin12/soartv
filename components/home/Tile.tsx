@@ -1,8 +1,10 @@
 'use client'
 
+import Link from 'next/link'
 import Image from 'next/image'
 import Icon from '@/components/Icon'
 import { titleGradient } from '@/lib/utils'
+import { toWatchPath } from '@/lib/urls'
 import type { MediaItem } from '@/types'
 
 interface Props {
@@ -12,8 +14,11 @@ interface Props {
 }
 
 export default function Tile({ item, variant = 'wide', progress }: Props) {
+  const tmdbId = item.id.replace(/^(m|tv)-/, '')
+  const href   = toWatchPath(item.type, tmdbId, item.title)
+
   return (
-    <div className={`tile ${variant}`}>
+    <Link href={href} className={`tile ${variant}`} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
       {item.imageUrl ? (
         <Image
           className="poster"
@@ -41,6 +46,6 @@ export default function Tile({ item, variant = 'wide', progress }: Props) {
             : `${item.genre}${item.year ? ' · ' + item.year : ''}`}
         </div>
       </div>
-    </div>
+    </Link>
   )
 }

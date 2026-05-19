@@ -1,0 +1,79 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Helpers ──────────────────────────────────────────────────────────────
+    function isAuth()  { return request.auth != null; }
+    function isOwner(uid) { return isAuth() && request.auth.uid == uid; }
+    function isAdmin() { return isAuth() && request.auth.token.role == 'admin'; }
+
+    // ── Users ─────────────────────────────────────────────────────────────────
+    match /users/{uid} {
+      allow read, write: if isOwner(uid);
+
+      // Watchlist — own subcollection only
+      match /watchlist/{mediaId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // Resonance profile — own only
+      match /resonanceProfile/{docId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // Continue watching — own only
+      match /continueWatching/{mediaId} {
+        allow read, write: if isOwner(uid);
+      }
+    }
+
+    // ── Originals — SoarTV in-house titles ───────────────────────────────────
+    // Read: any authenticated user
+    // Write: admin only (Firebase custom claim role = 'admin')
+    match /originals/{originalId} {
+      allow read:  if isAuth();
+      allow write: if isAdmin();
+
+      // Shop This Scene products
+      match /products/{productId} {
+        allow read:  if isAuth();
+        allow write: if isAdmin();
+      }
+    }
+
+    // ── Watch Party ───────────────────────────────────────────────────────────
+    // Any authenticated user can create or join a party
+    match /watchParty/{partyId} {
+      allow read:   if isAuth();
+      allow create: if isAuth();
+      // Only the creator (stored in 'createdBy') can update party settings
+      allow update: if isAuth() && (
+        resource.data.createdBy == request.auth.uid || isAdmin()
+      );
+      allow delete: if isAdmin();
+
+      // Viewers — presence tracking. Users can only write/delete their own viewer doc.
+      // Doc id must equal the user's uid.
+      match /viewers/{viewerId} {
+        allow read:           if isAuth();
+        allow create, update: if isAuth() && viewerId == request.auth.uid;
+        allow delete:         if isAuth() && viewerId == request.auth.uid;
+      }
+
+      // Comments — any authenticated user can post; only owner can delete own
+      match /comments/{commentId} {
+        allow read:   if isAuth();
+        allow create: if isAuth() && request.resource.data.uid == request.auth.uid;
+        allow delete: if isAuth() && resource.data.uid == request.auth.uid;
+        allow update: if false; // comments are immutable
+      }
+    }
+
+    // ── Merchants (future: Dinner & A Movie) ─────────────────────────────────
+    match /merchants/{merchantId} {
+      allow read:  if isAuth();
+      allow write: if isAdmin();
+    }
+  }
+}
