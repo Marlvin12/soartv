@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { getSurveyFilms } from '@/lib/archetypes'
 import type { ArchetypeId } from '@/lib/archetypes'
 import type { SurveyAnswers } from '@/types'
@@ -37,6 +37,19 @@ export default function PosterSurvey({ onComplete, onSkip }: Props) {
   const films = getSurveyFilms()
   const q     = QUESTIONS[step]
 
+  // Track pending auto-advance timers so we can cancel them when the user changes their pick
+  const fadeTimerRef    = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const cancelPendingAdvance = () => {
+    if (fadeTimerRef.current)    { clearTimeout(fadeTimerRef.current);    fadeTimerRef.current = null }
+    if (advanceTimerRef.current) { clearTimeout(advanceTimerRef.current); advanceTimerRef.current = null }
+    setRevealing(false)
+  }
+
+  // Clear any pending timers on unmount
+  useEffect(() => () => cancelPendingAdvance(), [])
+
   // Fetch all 7 poster images once on mount
   useEffect(() => {
     let cancelled = false
@@ -62,35 +75,51 @@ export default function PosterSurvey({ onComplete, onSkip }: Props) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Auto-advance after card selection: brief moment to see the highlight, then move on.
+  // Card tap behavior:
+  //  - Tapping the currently-selected card deselects it (cancels pending auto-advance)
+  //  - Tapping a different card switches selection (cancels any pending advance, schedules new one)
+  //  - When idle (no pending advance), selecting a card schedules auto-advance to next question
   const pick = (id: ArchetypeId) => {
-    if (selected || revealing) return
+    // Don't allow taps while the fade-out is mid-flight (would race with the render swap)
+    if (revealing) return
+
+    cancelPendingAdvance()
+
+    // Deselect when tapping the same card
+    if (selected === id) {
+      setSelected(null)
+      const { [q.key]: _omit, ...rest } = answers  // remove this question's answer
+      setAnswers(rest)
+      return
+    }
+
+    // Select this card and save the answer
     setSelected(id)
     const nextAnswers = { ...answers, [q.key]: id }
     setAnswers(nextAnswers)
 
+    // Schedule auto-advance. If user taps a different card before the timer fires,
+    // cancelPendingAdvance() will clear it and reschedule.
     if (step < QUESTIONS.length - 1) {
-      // Auto-advance to next question
-      setTimeout(() => setRevealing(true), 320)
-      setTimeout(() => {
+      fadeTimerRef.current = setTimeout(() => setRevealing(true), 520)
+      advanceTimerRef.current = setTimeout(() => {
         setStep(s => s + 1)
-        // Restore previous selection for that step if user already answered it, else clear
-        setSelected(nextAnswers[QUESTIONS[step + 1].key as keyof SurveyAnswers] as ArchetypeId ?? null)
+        setSelected((nextAnswers[QUESTIONS[step + 1].key as keyof SurveyAnswers] as ArchetypeId) ?? null)
         setRevealing(false)
-      }, 700)
-    } else {
-      // Last question — wait a beat for the highlight, then finish
-      setTimeout(() => onComplete(nextAnswers as SurveyAnswers), 500)
+        fadeTimerRef.current = null
+        advanceTimerRef.current = null
+      }, 900)
     }
+    // On the last question we DON'T auto-finish — user clicks "See My Profile" explicitly
   }
 
   const goBack = () => {
     if (step === 0 || revealing) return
+    cancelPendingAdvance()
     setRevealing(true)
     setTimeout(() => {
       const prevStep = step - 1
       setStep(prevStep)
-      // Restore previous answer so user sees their last selection highlighted
       setSelected((answers[QUESTIONS[prevStep].key as keyof SurveyAnswers] as ArchetypeId) ?? null)
       setRevealing(false)
     }, 380)
@@ -163,7 +192,7 @@ export default function PosterSurvey({ onComplete, onSkip }: Props) {
           )}
           {!isLast && selected && (
             <p style={{ fontSize: 12, color: 'var(--muted)', margin: 0, alignSelf: 'center' }}>
-              Moving on…
+              Moving on… <span style={{ opacity: 0.7 }}>tap again to change</span>
             </p>
           )}
         </div>
