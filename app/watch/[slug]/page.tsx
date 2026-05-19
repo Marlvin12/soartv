@@ -134,8 +134,11 @@ export default function WatchPage() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)', padding: '0 0 80px' }}>
-      {/* back bar */}
-      <div style={{ padding: '20px 40px', display: 'flex', alignItems: 'center', gap: 12 }}>
+      {/* back bar — respects iOS notch/Dynamic Island */}
+      <div style={{
+        padding: 'calc(20px + env(safe-area-inset-top)) calc(24px + env(safe-area-inset-right)) 20px calc(24px + env(safe-area-inset-left))',
+        display: 'flex', alignItems: 'center', gap: 12,
+      }}>
         <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--muted)', fontWeight: 500 }}>
           <BackIcon /> SoarTV
         </Link>
@@ -152,13 +155,22 @@ export default function WatchPage() {
 
       <div style={{ maxWidth: 960, margin: '0 auto', padding: '0 24px', position: 'relative', zIndex: 2 }}>
         {/* meta */}
-        <div style={{ display: 'flex', gap: 24, marginBottom: 28 }}>
+        <div className="watch-meta">
           {detail?.poster_path && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={IMG_500 + detail.poster_path}
               alt={title}
-              style={{ width: 120, borderRadius: 12, flexShrink: 0, boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}
+              className="watch-poster"
+              style={{
+                borderRadius: 12,
+                flexShrink: 0,
+                alignSelf: 'flex-start',     // ← stops flex container from stretching the image
+                aspectRatio: '2 / 3',        // ← guarantees portrait ratio even if image loads late
+                height: 'auto',
+                objectFit: 'cover',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+              }}
             />
           )}
           <div style={{ flex: 1, paddingTop: 8 }}>
