@@ -80,6 +80,38 @@ img { display: block; max-width: 100%; }
 .onb-sub { font-size: 16px; color: var(--text-dim); margin: 0 0 56px; text-align: center; max-width: 540px; text-wrap: pretty; }
 
 .q-grid { display: grid; grid-template-columns: repeat(3,minmax(280px,320px)); gap: 20px; max-width: 1080px; width: 100%; }
+
+/* Poster survey grid — responsive:
+   - Desktop ≥1024px: 12-col grid, 3 cards span-4 + 4 cards span-3 (the 3+4 layout user wanted)
+   - Tablet 640-1023px: 3 columns equal, 7th card centered alone in row 3
+   - Mobile <640px: 2 columns, 7th card centered alone in row 4 */
+.poster-grid {
+  display: grid;
+  gap: 14px;
+  width: 100%;
+  max-width: 1100px;
+  grid-template-columns: repeat(12, 1fr);
+}
+.poster-grid > :nth-child(-n+3) { grid-column: span 4; }
+.poster-grid > :nth-child(n+4) { grid-column: span 3; }
+
+@media (max-width: 1023px) {
+  .poster-grid { grid-template-columns: repeat(3, 1fr); }
+  .poster-grid > * { grid-column: auto !important; }
+  .poster-grid > :nth-child(7) { grid-column: 2 !important; }
+}
+
+@media (max-width: 640px) {
+  .poster-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .poster-grid > * { grid-column: auto !important; }
+  .poster-grid > :nth-child(7) {
+    grid-column: 1 / -1 !important;
+    max-width: 50%;
+    margin: 0 auto;
+    justify-self: center;
+  }
+}
+
 .q-card {
   position: relative; aspect-ratio: 3/4; border-radius: 18px; overflow: hidden;
   cursor: pointer; background: var(--bg-card);

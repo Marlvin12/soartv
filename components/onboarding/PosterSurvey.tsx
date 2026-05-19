@@ -105,20 +105,16 @@ export default function PosterSurvey({ onComplete, onSkip }: Props) {
         <h2 className="onb-title">{q.title}</h2>
         <p className="onb-sub">{q.sub}</p>
 
-        {/* poster grid — 12-col subgrid: row 1 = 3 cards (span 4 each), row 2 = 4 cards (span 3 each) */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(12, 1fr)',
-          gap: 16, width: '100%', maxWidth: 1100,
-        }}>
+        {/* poster grid — responsive: desktop 3+4, tablet 3-col, mobile 2-col */}
+        <div className="poster-grid">
           {fetching
             ? films.map((_, i) => (
-                <div key={i} style={{ gridColumn: i < 3 ? 'span 4' : 'span 3', width: '100%' }}>
+                <div key={i} style={{ width: '100%' }}>
                   <PosterSkeleton />
                 </div>
               ))
-            : posters.map(({ film, posterUrl }, i) => (
-                <div key={film.archetypeId} style={{ gridColumn: i < 3 ? 'span 4' : 'span 3', width: '100%' }}>
+            : posters.map(({ film, posterUrl }) => (
+                <div key={film.archetypeId} style={{ width: '100%' }}>
                   <PosterCard
                     film={film}
                     posterUrl={posterUrl}
