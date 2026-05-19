@@ -62,26 +62,38 @@ export default function PosterSurvey({ onComplete, onSkip }: Props) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // Auto-advance after card selection: brief moment to see the highlight, then move on.
   const pick = (id: ArchetypeId) => {
-    if (selected) return
+    if (selected || revealing) return
     setSelected(id)
-  }
-
-  const advance = () => {
-    if (!selected) return
-    const next = { ...answers, [q.key]: selected }
-    setAnswers(next)
+    const nextAnswers = { ...answers, [q.key]: id }
+    setAnswers(nextAnswers)
 
     if (step < QUESTIONS.length - 1) {
-      setRevealing(true)
+      // Auto-advance to next question
+      setTimeout(() => setRevealing(true), 320)
       setTimeout(() => {
         setStep(s => s + 1)
-        setSelected(null)
+        // Restore previous selection for that step if user already answered it, else clear
+        setSelected(nextAnswers[QUESTIONS[step + 1].key as keyof SurveyAnswers] as ArchetypeId ?? null)
         setRevealing(false)
-      }, 380)
+      }, 700)
     } else {
-      onComplete(next as SurveyAnswers)
+      // Last question — wait a beat for the highlight, then finish
+      setTimeout(() => onComplete(nextAnswers as SurveyAnswers), 500)
     }
+  }
+
+  const goBack = () => {
+    if (step === 0 || revealing) return
+    setRevealing(true)
+    setTimeout(() => {
+      const prevStep = step - 1
+      setStep(prevStep)
+      // Restore previous answer so user sees their last selection highlighted
+      setSelected((answers[QUESTIONS[prevStep].key as keyof SurveyAnswers] as ArchetypeId) ?? null)
+      setRevealing(false)
+    }, 380)
   }
 
   const isLast = step === QUESTIONS.length - 1
@@ -127,16 +139,33 @@ export default function PosterSurvey({ onComplete, onSkip }: Props) {
           }
         </div>
 
-        {/* CTA */}
-        <div className="onb-cta">
-          <button
-            className="next"
-            disabled={!selected}
-            onClick={advance}
-          >
-            {isLast ? 'See My Profile ✦' : 'Next'}
-            {!isLast && <ArrowIcon />}
-          </button>
+        {/* CTA — only Back (Next removed, cards auto-advance) */}
+        <div className="onb-cta" style={{ minHeight: 56 }}>
+          {step > 0 && (
+            <button
+              className="back"
+              onClick={goBack}
+              disabled={revealing}
+              aria-label="Previous question"
+            >
+              <ArrowIcon flip /> Back
+            </button>
+          )}
+          {/* On the last question we still need an explicit finish button — auto-finish feels abrupt */}
+          {isLast && (
+            <button
+              className="next"
+              disabled={!selected || revealing}
+              onClick={() => selected && onComplete({ ...answers, [q.key]: selected } as SurveyAnswers)}
+            >
+              See My Profile ✦
+            </button>
+          )}
+          {!isLast && selected && (
+            <p style={{ fontSize: 12, color: 'var(--muted)', margin: 0, alignSelf: 'center' }}>
+              Moving on…
+            </p>
+          )}
         </div>
       </div>
     </div>
@@ -223,8 +252,17 @@ function Brand() {
   )
 }
 
-function ArrowIcon() {
-  return <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+function ArrowIcon({ flip = false }: { flip?: boolean }) {
+  return (
+    <svg
+      width="16" height="16" viewBox="0 0 16 16"
+      fill="none" stroke="currentColor" strokeWidth="2"
+      strokeLinecap="round" strokeLinejoin="round"
+      style={{ transform: flip ? 'scaleX(-1)' : undefined }}
+    >
+      <path d="M3 8h10M9 4l4 4-4 4"/>
+    </svg>
+  )
 }
 
 function FilmIcon() {
