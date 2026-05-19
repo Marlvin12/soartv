@@ -11,7 +11,7 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 type Variant = 'pill' | 'icon'
-type Platform = 'ios' | 'android-chrome' | 'desktop-chrome' | 'desktop-other' | 'unknown'
+type Platform = 'ios-safari' | 'ios-other' | 'android-chrome' | 'desktop-chrome' | 'desktop-other' | 'unknown'
 
 interface Props {
   variant?: Variant
@@ -19,11 +19,19 @@ interface Props {
 
 function detectPlatform(): Platform {
   if (typeof window === 'undefined') return 'unknown'
-  const ua  = window.navigator.userAgent.toLowerCase()
-  const ios = /iphone|ipad|ipod/.test(ua) && !/crios|fxios/.test(ua)
-  if (ios) return 'ios'
+  const ua = window.navigator.userAgent.toLowerCase()
+
+  // ALL iOS devices: Apple forces WebKit, so PWA install is Safari-only.
+  // Detect iOS first regardless of browser brand.
+  const isIOS = /iphone|ipad|ipod/.test(ua)
+  if (isIOS) {
+    // Chrome iOS = "crios", Firefox iOS = "fxios", Edge iOS = "edgios"
+    const isOtherIOSBrowser = /crios|fxios|edgios|opios/.test(ua)
+    return isOtherIOSBrowser ? 'ios-other' : 'ios-safari'
+  }
+
   const android = /android/.test(ua)
-  const chrome  = /chrome|chromium|crios|edg/.test(ua) && !/firefox/.test(ua)
+  const chrome  = /chrome|chromium|edg/.test(ua) && !/firefox/.test(ua)
   if (android && chrome) return 'android-chrome'
   if (chrome) return 'desktop-chrome'
   return 'desktop-other'
@@ -134,21 +142,30 @@ export default function InstallPWA({ variant = 'pill' }: Props) {
               </button>
             </div>
             <p style={{ fontSize: 13, color: 'var(--muted)', margin: '0 0 22px' }}>
-              {platform === 'ios'
-                ? 'On iPhone or iPad, install from Safari:'
-                : platform === 'android-chrome'
-                  ? 'Install on your Android device:'
-                  : platform === 'desktop-chrome'
-                    ? 'Install on your computer:'
-                    : 'PWA install instructions for your browser:'
+              {platform === 'ios-safari'
+                ? 'Install on your iPhone:'
+                : platform === 'ios-other'
+                  ? 'On iPhone, PWA install is Safari-only:'
+                  : platform === 'android-chrome'
+                    ? 'Install on your Android device:'
+                    : platform === 'desktop-chrome'
+                      ? 'Install on your computer:'
+                      : 'PWA install instructions for your browser:'
               }
             </p>
             <ol style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 14 }}>
-              {platform === 'ios' && (
+              {platform === 'ios-safari' && (
                 <>
                   <Step n={1} text={<>Tap the <strong style={{ color: '#fff' }}>Share</strong> icon at the bottom of Safari (a square with an arrow pointing up).</>} />
                   <Step n={2} text={<>Scroll down and tap <strong style={{ color: '#fff' }}>Add to Home Screen</strong>.</>} />
                   <Step n={3} text={<>Tap <strong style={{ color: '#fff' }}>Add</strong> in the top right.</>} />
+                </>
+              )}
+              {platform === 'ios-other' && (
+                <>
+                  <Step n={1} text={<><strong style={{ color: '#fff' }}>Apple restricts</strong> PWA install to Safari only — Chrome/Firefox on iPhone can&apos;t install web apps.</>} />
+                  <Step n={2} text={<>Long-press the URL bar above, copy the link, then paste it into <strong style={{ color: '#fff' }}>Safari</strong>.</>} />
+                  <Step n={3} text={<>In Safari, tap <strong style={{ color: '#fff' }}>Share → Add to Home Screen → Add</strong>.</>} />
                 </>
               )}
               {platform === 'android-chrome' && (
