@@ -13,7 +13,7 @@ import { idToProgress } from '@/lib/utils'
 import { useAuth } from '@/context/AuthContext'
 import { doc, onSnapshot } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
-import { ARCHETYPES } from '@/lib/archetypes'
+import { ARCHETYPES, resolveArchetype } from '@/lib/archetypes'
 import type { ArchetypeId } from '@/lib/archetypes'
 import type { Answers, MediaItem, ResonanceProfile } from '@/types'
 
@@ -49,7 +49,7 @@ export default function Home({ answers, onRetake }: Props) {
     return onSnapshot(
       doc(db, 'users', user.uid, 'resonanceProfile', 'current'),
       snap => {
-        if (snap.exists()) setArch((snap.data() as ResonanceProfile).archetype)
+        if (snap.exists()) setArch(resolveArchetype((snap.data() as ResonanceProfile).archetype))
       }
     )
   }, [user])

@@ -1,6 +1,6 @@
-import type { ArchetypeId } from '@/lib/archetypes'
+import type { ArchetypeId, IntegratedPathId } from '@/lib/archetypes'
 
-export type { ArchetypeId }
+export type { ArchetypeId, IntegratedPathId }
 
 export interface Answers {
   firstPick: string
@@ -13,14 +13,18 @@ export interface SurveyAnswers {
   aspiration: ArchetypeId
   lifeStory:  ArchetypeId
   avoid:      ArchetypeId
+  // Archetype detected by the FilmFlow7 conversational entry, when taken.
+  entry?:     ArchetypeId
 }
 
 export interface ResonanceProfile {
-  archetype:     ArchetypeId
-  secondary:     ArchetypeId
-  scores:        Record<ArchetypeId, number>
-  surveyAnswers: SurveyAnswers
-  updatedAt:     number
+  archetype:      ArchetypeId
+  secondary:      ArchetypeId
+  scores:         Record<ArchetypeId, number>
+  surveyAnswers:  SurveyAnswers
+  // Set when the user came through the conversational entry first.
+  entryArchetype?: ArchetypeId
+  updatedAt:      number
 }
 
 export type DailyState = 'onEdge' | 'inMyHead' | 'restless' | 'settling' | 'grounded'

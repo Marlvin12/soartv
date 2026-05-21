@@ -6,7 +6,7 @@ import { useAuth } from '@/context/AuthContext'
 import { useWatchlist } from '@/context/WatchlistContext'
 import { doc, onSnapshot } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
-import { ARCHETYPES } from '@/lib/archetypes'
+import { ARCHETYPES, resolveArchetype } from '@/lib/archetypes'
 import InsightsReveal from '@/components/resonance/InsightsReveal'
 import type { ResonanceProfile } from '@/types'
 
@@ -55,7 +55,7 @@ export default function ProfilePage() {
           </h1>
           {profile && (
             <p style={{ fontSize: 13, color: 'var(--soar)', fontWeight: 500, margin: 0 }}>
-              {ARCHETYPES[profile.archetype].name}
+              {ARCHETYPES[resolveArchetype(profile.archetype)].name}
             </p>
           )}
         </div>

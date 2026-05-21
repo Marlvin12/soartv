@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { ARCHETYPES } from '@/lib/archetypes'
+import { ARCHETYPES, resolveArchetype } from '@/lib/archetypes'
 import type { ArchetypeId } from '@/lib/archetypes'
 import type { ResonanceProfile } from '@/types'
 
@@ -11,8 +11,9 @@ interface Props {
 }
 
 export default function InsightsReveal({ profile, onEnter }: Props) {
-  const arch     = ARCHETYPES[profile.archetype]
-  const secondary = ARCHETYPES[profile.secondary]
+  const archId    = resolveArchetype(profile.archetype)
+  const arch      = ARCHETYPES[archId]
+  const secondary = ARCHETYPES[resolveArchetype(profile.secondary)]
   const [playing, setPlaying]   = useState(false)
   const [loading, setLoading]   = useState(false)
   const audioRef                = useRef<HTMLAudioElement | null>(null)
@@ -129,7 +130,7 @@ export default function InsightsReveal({ profile, onEnter }: Props) {
               <div key={id}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
                   <span style={{ fontSize: 13, fontWeight: 500, color: id === profile.archetype ? '#b4a7ff' : 'var(--text-dim)' }}>
-                    {ARCHETYPES[id].name}
+                    {ARCHETYPES[resolveArchetype(id)].name}
                   </span>
                   <span style={{ fontSize: 12, color: 'var(--muted)' }}>{pct}%</span>
                 </div>
@@ -149,7 +150,7 @@ export default function InsightsReveal({ profile, onEnter }: Props) {
       {/* integrated path */}
       <div style={{ width: '100%', maxWidth: 900, marginTop: 16, marginBottom: 40, padding: '22px', borderRadius: 18, background: 'linear-gradient(135deg,rgba(180,167,255,0.12),rgba(180,167,255,0.02))', border: '1px solid rgba(180,167,255,0.2)' }}>
         <p style={{ fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--soar)', marginBottom: 8 }}>Your Integrated Path</p>
-        <p style={{ fontSize: 22, fontWeight: 600, color: '#fff', margin: '0 0 6px' }}>{arch.integratedPath}</p>
+        <p style={{ fontSize: 22, fontWeight: 600, color: '#fff', margin: '0 0 6px' }}>{arch.integratedPathName}</p>
         <p style={{ fontSize: 15, color: 'var(--text-dim)', margin: 0, lineHeight: 1.6 }}>{arch.integratedPathDesc}</p>
       </div>
 

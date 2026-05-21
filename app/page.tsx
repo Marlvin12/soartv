@@ -9,6 +9,7 @@ import Building      from '@/components/Building'
 import Home          from '@/components/home/Home'
 import { useAuth }   from '@/context/AuthContext'
 import { scoreResonance } from '@/lib/archetypes'
+import type { ArchetypeId } from '@/lib/archetypes'
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
 import type { SurveyAnswers, Answers } from '@/types'
@@ -18,14 +19,16 @@ type Scene = 'mode-select' | 'survey' | 'voice-survey' | 'auth' | 'building' | '
 const DEFAULT_ANSWERS: Answers = { firstPick: 'lakeshoreStatic', mood: 'curious', intensity: 'move' }
 
 export default function Page() {
-  const { user }                        = useAuth()
-  const [scene, setScene]               = useState<Scene>('mode-select')
+  const { user }                          = useAuth()
+  const [scene, setScene]                 = useState<Scene>('mode-select')
   const [surveyAnswers, setSurveyAnswers] = useState<SurveyAnswers | null>(null)
-  const [answers, setAnswers]           = useState<Answers>(DEFAULT_ANSWERS)
-  const [transitioning, setTrans]       = useState(false)
-  const [authOpen, setAuthOpen]         = useState(false)
+  // Archetype detected by the FilmFlow7 conversational entry (voice path only).
+  const [entryArchetype, setEntryArchetype] = useState<ArchetypeId | null>(null)
+  const [answers, setAnswers]             = useState<Answers>(DEFAULT_ANSWERS)
+  const [transitioning, setTrans]         = useState(false)
+  const [authOpen, setAuthOpen]           = useState(false)
 
-  // When user signs in during auth scene, save resonance profile and advance
+  // When the user signs in during the auth scene, save the profile and advance.
   useEffect(() => {
     if (scene === 'auth' && user && surveyAnswers) {
       saveResonanceProfile(user.uid, surveyAnswers)
@@ -41,12 +44,13 @@ export default function Page() {
   }
 
   const onSurveyComplete = (sa: SurveyAnswers) => {
-    setSurveyAnswers(sa)
-    // Map survey answer to mood for home content
-    setAnswers({ firstPick: sa.mood, mood: sa.mood, intensity: 'move' })
+    // Fold in the conversational-entry signal when the voice path was taken.
+    const full: SurveyAnswers = entryArchetype ? { ...sa, entry: entryArchetype } : sa
+    setSurveyAnswers(full)
+    // Map the survey mood pick to the legacy Answers shape for home content.
+    setAnswers({ firstPick: full.mood, mood: full.mood, intensity: 'move' })
     if (user) {
-      // Already signed in — save profile and go build
-      saveResonanceProfile(user.uid, sa).catch(console.error)
+      saveResonanceProfile(user.uid, full).catch(console.error)
       goBuilding()
     } else {
       setScene('auth')
@@ -55,7 +59,7 @@ export default function Page() {
   }
 
   const onAuthClose = () => {
-    // User closed modal without signing in — continue as guest
+    // User closed the modal without signing in — continue as guest.
     setAuthOpen(false)
     goBuilding()
   }
@@ -63,6 +67,12 @@ export default function Page() {
   const skip = () => {
     setAnswers(DEFAULT_ANSWERS)
     goBuilding()
+  }
+
+  const retake = () => {
+    setEntryArchetype(null)
+    setSurveyAnswers(null)
+    setScene('mode-select')
   }
 
   return (
@@ -76,24 +86,23 @@ export default function Page() {
         </div>
       )}
 
-      {scene === 'survey' && (
-        <div className={`scene${transitioning ? ' fading' : ''}`}>
-          <PosterSurvey onComplete={onSurveyComplete} onSkip={skip} />
-        </div>
-      )}
-
       {scene === 'voice-survey' && (
         <div className={`scene${transitioning ? ' fading' : ''}`}>
           <VoiceSurvey
-            onComplete={sa => {
-              // VoiceSurvey returns old Answers shape — treat firstPick as mood proxy
-              setAnswers(sa)
-              setScene('auth')
-              setAuthOpen(true)
+            onComplete={arch => {
+              // FilmFlow7 entry done — carry the signature into the poster survey.
+              setEntryArchetype(arch)
+              setScene('survey')
             }}
             onSkip={skip}
             onSwitchToCards={() => setScene('survey')}
           />
+        </div>
+      )}
+
+      {scene === 'survey' && (
+        <div className={`scene${transitioning ? ' fading' : ''}`}>
+          <PosterSurvey onComplete={onSurveyComplete} onSkip={skip} />
         </div>
       )}
 
@@ -105,7 +114,7 @@ export default function Page() {
 
       {scene === 'home' && (
         <div className="scene">
-          <Home answers={answers} onRetake={() => setScene('mode-select')} />
+          <Home answers={answers} onRetake={retake} />
         </div>
       )}
     </div>
@@ -121,6 +130,7 @@ async function saveResonanceProfile(uid: string, sa: SurveyAnswers) {
       secondary:     result.secondary,
       scores:        result.scores,
       surveyAnswers: sa,
+      ...(sa.entry ? { entryArchetype: sa.entry } : {}),
       updatedAt:     serverTimestamp(),
     },
     { merge: true }

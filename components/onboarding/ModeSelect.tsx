@@ -101,8 +101,8 @@ export default function ModeSelect({ onSelect, onSkip }: Props) {
             <div className="msc-copy">
               <span className="msc-badge msc-badge--purple">AI-guided</span>
               <h2 className="msc-name">Voice</h2>
-              <p className="msc-desc">Sit back. AI reads every question aloud and builds your night from your answers.</p>
-              <span className="msc-cta">Start listening →</span>
+              <p className="msc-desc">Tell us how you&apos;re really arriving tonight. AI reads your resonance and mirrors it back, out loud.</p>
+              <span className="msc-cta">Start the conversation →</span>
             </div>
           </div>
         </button>
