@@ -49,7 +49,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <p style={{ fontSize: 14, color: 'var(--muted)', margin: 0 }}>
             {user ? 'Your account does not have admin privileges.' : 'You must be signed in as an admin.'}
           </p>
-          <Link href="/" style={{ marginTop: 8, fontSize: 14, color: '#b4a7ff' }}>← Back to SoarTV</Link>
+          <Link href="/" style={{ marginTop: 8, fontSize: 14, color: '#e8c87a' }}>← Back to SoarTV</Link>
         </div>
       </Shell>
     )
@@ -73,7 +73,7 @@ function Shell({ children }: { children: React.ReactNode }) {
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
           <SoarIcon />
           <span style={{ fontSize: 15, fontWeight: 600, color: '#fff', letterSpacing: '-0.02em' }}>
-            Soar<span style={{ color: '#b4a7ff' }}>TV</span>
+            Soar<span style={{ color: '#e8c87a' }}>TV</span>
           </span>
         </Link>
         <div style={{ width: 1, height: 18, background: 'var(--line)' }} />
@@ -110,9 +110,9 @@ function Shell({ children }: { children: React.ReactNode }) {
 function SoarIcon() {
   return (
     <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
-      <rect width="28" height="28" rx="7" fill="rgba(180,167,255,0.15)" />
-      <path d="M8 20 L14 9 L20 20" stroke="#b4a7ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-      <circle cx="14" cy="9" r="1.8" fill="#b4a7ff"/>
+      <rect width="28" height="28" rx="7" fill="rgba(232,200,122,0.15)" />
+      <path d="M8 20 L14 9 L20 20" stroke="#e8c87a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+      <circle cx="14" cy="9" r="1.8" fill="#e8c87a"/>
     </svg>
   )
 }
@@ -129,8 +129,8 @@ function LockIcon() {
 function Spinner() {
   return (
     <svg width="32" height="32" viewBox="0 0 32 32" fill="none" style={{ animation: 'spin 0.9s linear infinite' }}>
-      <circle cx="16" cy="16" r="13" stroke="rgba(180,167,255,0.2)" strokeWidth="2.5"/>
-      <path d="M16 3a13 13 0 0 1 13 13" stroke="#b4a7ff" strokeWidth="2.5" strokeLinecap="round"/>
+      <circle cx="16" cy="16" r="13" stroke="rgba(232,200,122,0.2)" strokeWidth="2.5"/>
+      <path d="M16 3a13 13 0 0 1 13 13" stroke="#e8c87a" strokeWidth="2.5" strokeLinecap="round"/>
       <style>{'@keyframes spin{to{transform:rotate(360deg)}}'}</style>
     </svg>
   )

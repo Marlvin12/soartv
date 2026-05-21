@@ -97,13 +97,13 @@ export default function InstallPWA({ variant = 'pill' }: Props) {
           style={{
             display: 'inline-flex', alignItems: 'center', gap: 6,
             padding: '7px 14px', borderRadius: 999,
-            background: 'linear-gradient(135deg,rgba(180,167,255,0.2),rgba(180,167,255,0.08))',
-            border: '1px solid rgba(180,167,255,0.35)',
-            color: '#b4a7ff', fontSize: 12, fontWeight: 600, cursor: 'pointer',
+            background: 'linear-gradient(135deg,rgba(232,200,122,0.2),rgba(232,200,122,0.08))',
+            border: '1px solid rgba(232,200,122,0.35)',
+            color: '#e8c87a', fontSize: 12, fontWeight: 600, cursor: 'pointer',
             transition: 'background 0.2s',
           }}
-          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(180,167,255,0.25)' }}
-          onMouseLeave={e => { e.currentTarget.style.background = 'linear-gradient(135deg,rgba(180,167,255,0.2),rgba(180,167,255,0.08))' }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(232,200,122,0.25)' }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'linear-gradient(135deg,rgba(232,200,122,0.2),rgba(232,200,122,0.08))' }}
         >
           <DownloadIcon /> Install App
         </button>
@@ -201,7 +201,7 @@ export default function InstallPWA({ variant = 'pill' }: Props) {
 function Step({ n, text }: { n: number; text: React.ReactNode }) {
   return (
     <li style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-      <div style={{ flexShrink: 0, width: 24, height: 24, borderRadius: '50%', background: 'rgba(180,167,255,0.2)', border: '1px solid rgba(180,167,255,0.3)', color: '#b4a7ff', fontSize: 12, fontWeight: 700, display: 'grid', placeItems: 'center' }}>
+      <div style={{ flexShrink: 0, width: 24, height: 24, borderRadius: '50%', background: 'rgba(232,200,122,0.2)', border: '1px solid rgba(232,200,122,0.3)', color: '#e8c87a', fontSize: 12, fontWeight: 700, display: 'grid', placeItems: 'center' }}>
         {n}
       </div>
       <p style={{ fontSize: 14, color: 'var(--text-dim)', lineHeight: 1.5, margin: 0 }}>{text}</p>

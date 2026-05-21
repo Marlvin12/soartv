@@ -40,7 +40,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
           onClick={reset}
           style={{
             padding: '11px 24px', borderRadius: 999, fontSize: 14, fontWeight: 700,
-            background: 'linear-gradient(135deg,#7c5cfc,#b4a7ff)', color: '#0a0a0e',
+            background: 'linear-gradient(135deg,#d9b45e,#e8c87a)', color: '#0a0a0e',
             border: 'none', cursor: 'pointer',
           }}
         >Try again</button>

@@ -293,7 +293,7 @@ export default function AuthModal({ isOpen, onClose }: Props) {
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <SoarIcon />
               <span style={{ fontSize: 17, fontWeight: 600, color: '#fff', letterSpacing: '-0.02em' }}>
-                Soar<span style={{ color: '#b4a7ff', fontWeight: 700 }}>TV</span>
+                Soar<span style={{ color: '#e8c87a', fontWeight: 700 }}>TV</span>
               </span>
             </div>
             <button
@@ -343,7 +343,7 @@ export default function AuthModal({ isOpen, onClose }: Props) {
                   <CheckCircleIcon />
                   <p style={{ color: '#4ade80', fontWeight: 600, marginTop: 10 }}>Reset link sent</p>
                   <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 13, marginTop: 6, lineHeight: 1.5 }}>Check your inbox for a password reset email.</p>
-                  <button type="button" onClick={() => { setShowReset(false); setResetSent(false) }} style={{ marginTop: 16, fontSize: 13, color: '#b4a7ff' }}>
+                  <button type="button" onClick={() => { setShowReset(false); setResetSent(false) }} style={{ marginTop: 16, fontSize: 13, color: '#e8c87a' }}>
                     ← Back to Log In
                   </button>
                 </div>
@@ -381,16 +381,16 @@ export default function AuthModal({ isOpen, onClose }: Props) {
               {!isLogin && (
                 <input type="text" required value={name} placeholder="Full Name"
                   onChange={e => setName(e.target.value)} style={inputStyle}
-                  onFocus={e => { e.currentTarget.style.borderColor = 'rgba(180,167,255,0.5)' }}
+                  onFocus={e => { e.currentTarget.style.borderColor = 'rgba(232,200,122,0.5)' }}
                   onBlur={e  => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)' }} />
               )}
               <input type="email" required value={email} placeholder="Email"
                 onChange={e => setEmail(e.target.value)} style={inputStyle}
-                onFocus={e => { e.currentTarget.style.borderColor = 'rgba(180,167,255,0.5)' }}
+                onFocus={e => { e.currentTarget.style.borderColor = 'rgba(232,200,122,0.5)' }}
                 onBlur={e  => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)' }} />
               <input type="password" required value={password} placeholder="Password"
                 onChange={e => setPassword(e.target.value)} style={inputStyle}
-                onFocus={e => { e.currentTarget.style.borderColor = 'rgba(180,167,255,0.5)' }}
+                onFocus={e => { e.currentTarget.style.borderColor = 'rgba(232,200,122,0.5)' }}
                 onBlur={e  => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)' }} />
               {isLogin && (
                 <div style={{ textAlign: 'right', marginTop: -4 }}>
@@ -485,7 +485,7 @@ export default function AuthModal({ isOpen, onClose }: Props) {
                       type="button"
                       onClick={() => switchTab(false)}
                       style={{
-                        color: '#b4a7ff', fontWeight: 700, padding: 0,
+                        color: '#e8c87a', fontWeight: 700, padding: 0,
                         textDecoration: 'underline', textUnderlineOffset: 3,
                         background: 'transparent', cursor: 'pointer',
                       }}
@@ -499,7 +499,7 @@ export default function AuthModal({ isOpen, onClose }: Props) {
                       type="button"
                       onClick={() => switchTab(true)}
                       style={{
-                        color: '#b4a7ff', fontWeight: 700, padding: 0,
+                        color: '#e8c87a', fontWeight: 700, padding: 0,
                         textDecoration: 'underline', textUnderlineOffset: 3,
                         background: 'transparent', cursor: 'pointer',
                       }}
@@ -545,8 +545,8 @@ function MethodButton({ active, onClick, icon, children }: {
       onClick={onClick}
       style={{
         flex: 1, padding: '12px 0', borderRadius: 14,
-        background: active ? 'rgba(180,167,255,0.15)' : 'rgba(255,255,255,0.04)',
-        border: active ? '1px solid rgba(180,167,255,0.45)' : '1px solid rgba(255,255,255,0.08)',
+        background: active ? 'rgba(232,200,122,0.15)' : 'rgba(255,255,255,0.04)',
+        border: active ? '1px solid rgba(232,200,122,0.45)' : '1px solid rgba(255,255,255,0.08)',
         color: active ? '#fff' : 'rgba(255,255,255,0.55)',
         fontSize: 13, fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
         cursor: 'pointer', transition: 'all 0.2s',
@@ -565,12 +565,12 @@ function PrimaryBtn({ loading, label, disabled }: { loading: boolean; label: str
       disabled={off}
       style={{
         width: '100%', padding: '14px 0', marginTop: 4,
-        background: off ? 'rgba(180,167,255,0.3)' : 'linear-gradient(135deg,#7c5cfc,#b4a7ff)',
+        background: off ? 'rgba(232,200,122,0.3)' : 'linear-gradient(135deg,#d9b45e,#e8c87a)',
         border: 'none', borderRadius: 14, color: off ? 'rgba(255,255,255,0.4)' : '#0a0a0e',
         fontSize: 15, fontWeight: 700, cursor: off ? 'not-allowed' : 'pointer',
         transition: 'opacity 0.2s, transform 0.15s',
         display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-        boxShadow: off ? 'none' : '0 8px 24px rgba(124,92,252,0.35)',
+        boxShadow: off ? 'none' : '0 8px 24px rgba(217,180,94,0.35)',
       }}
       onMouseEnter={e => { if (!off) e.currentTarget.style.transform = 'translateY(-1px)' }}
       onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)' }}
@@ -586,9 +586,9 @@ function PrimaryBtn({ loading, label, disabled }: { loading: boolean; label: str
 function SoarIcon() {
   return (
     <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-      <rect width="28" height="28" rx="8" fill="rgba(180,167,255,0.18)" />
-      <path d="M8 20 L14 9 L20 20" stroke="#b4a7ff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-      <circle cx="14" cy="9" r="2" fill="#b4a7ff"/>
+      <rect width="28" height="28" rx="8" fill="rgba(232,200,122,0.18)" />
+      <path d="M8 20 L14 9 L20 20" stroke="#e8c87a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+      <circle cx="14" cy="9" r="2" fill="#e8c87a"/>
     </svg>
   )
 }

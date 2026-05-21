@@ -7,7 +7,7 @@ const SOURCES = [
   { name: 'Server 1', url: (id: string | number, s: number, e: number) => `https://vidsrc.cc/v2/embed/tv/${id}/${s}/${e}` },
   { name: 'Server 2', url: (id: string | number, s: number, e: number) => `https://vidsrc-embed.ru/embed/tv/${id}/${s}/${e}` },
   { name: 'Server 3', url: (id: string | number, s: number, e: number) => `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${e}` },
-  { name: 'Server 4', url: (id: string | number, s: number, e: number) => `https://vidlink.pro/tv/${id}/${s}/${e}?primaryColor=b4a7ff&secondaryColor=a2a2a2&iconColor=eefdec&poster=true&title=true&nextbutton=false&player=jw&autoplay=true` },
+  { name: 'Server 4', url: (id: string | number, s: number, e: number) => `https://vidlink.pro/tv/${id}/${s}/${e}?primaryColor=e8c87a&secondaryColor=a2a2a2&iconColor=eefdec&poster=true&title=true&nextbutton=false&player=jw&autoplay=true` },
 ]
 
 interface Props {
@@ -40,9 +40,9 @@ function TvPlayer({ tvId, season = 1, episode = 1, title }: Props) {
             onClick={() => setSourceIdx(idx)}
             style={{
               padding: '6px 14px', borderRadius: 8, fontSize: 12, fontWeight: 600,
-              background: sourceIdx === idx ? 'rgba(180,167,255,0.2)' : 'rgba(255,255,255,0.05)',
-              color: sourceIdx === idx ? '#b4a7ff' : 'var(--muted)',
-              border: sourceIdx === idx ? '1px solid rgba(180,167,255,0.4)' : '1px solid transparent',
+              background: sourceIdx === idx ? 'rgba(232,200,122,0.2)' : 'rgba(255,255,255,0.05)',
+              color: sourceIdx === idx ? '#e8c87a' : 'var(--muted)',
+              border: sourceIdx === idx ? '1px solid rgba(232,200,122,0.4)' : '1px solid transparent',
               transition: 'all 0.2s', cursor: 'pointer',
             }}
           >

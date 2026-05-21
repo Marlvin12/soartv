@@ -9,7 +9,7 @@ const SOURCES = [
   { name: 'Server 1',  url: (id: string | number) => `https://vidsrc.cc/v2/embed/movie/${id}?autoPlay=true` },
   { name: 'Server 2',  url: (id: string | number) => `https://vidsrc-embed.ru/embed/movie/${id}?autoPlay=true` },
   { name: 'Server 3',  url: (id: string | number) => `https://multiembed.mov/?video_id=${id}&tmdb=1&autoPlay=true` },
-  { name: 'Server 4',  url: (id: string | number) => `https://vidlink.pro/movie/${id}?primaryColor=b4a7ff&secondaryColor=a2a2a2&iconColor=eefdec&poster=true&title=true&nextbutton=false&player=jw&autoplay=true` },
+  { name: 'Server 4',  url: (id: string | number) => `https://vidlink.pro/movie/${id}?primaryColor=e8c87a&secondaryColor=a2a2a2&iconColor=eefdec&poster=true&title=true&nextbutton=false&player=jw&autoplay=true` },
 ]
 
 interface Props {
@@ -40,9 +40,9 @@ function MoviePlayer({ movieId, title }: Props) {
             onClick={() => setSourceIdx(idx)}
             style={{
               padding: '6px 14px', borderRadius: 8, fontSize: 12, fontWeight: 600,
-              background: sourceIdx === idx ? 'rgba(180,167,255,0.2)' : 'rgba(255,255,255,0.05)',
-              color: sourceIdx === idx ? '#b4a7ff' : 'var(--muted)',
-              border: sourceIdx === idx ? '1px solid rgba(180,167,255,0.4)' : '1px solid transparent',
+              background: sourceIdx === idx ? 'rgba(232,200,122,0.2)' : 'rgba(255,255,255,0.05)',
+              color: sourceIdx === idx ? '#e8c87a' : 'var(--muted)',
+              border: sourceIdx === idx ? '1px solid rgba(232,200,122,0.4)' : '1px solid transparent',
               transition: 'all 0.2s', cursor: 'pointer',
             }}
           >

@@ -192,9 +192,9 @@ export default function WatchPage() {
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: 6,
                   padding: '9px 18px', borderRadius: 999, fontSize: 13, fontWeight: 600,
-                  background: inWatchlist ? 'rgba(180,167,255,0.2)' : 'rgba(255,255,255,0.06)',
-                  border: inWatchlist ? '1px solid rgba(180,167,255,0.4)' : '1px solid rgba(255,255,255,0.1)',
-                  color: inWatchlist ? '#b4a7ff' : 'var(--text-dim)',
+                  background: inWatchlist ? 'rgba(232,200,122,0.2)' : 'rgba(255,255,255,0.06)',
+                  border: inWatchlist ? '1px solid rgba(232,200,122,0.4)' : '1px solid rgba(255,255,255,0.1)',
+                  color: inWatchlist ? '#e8c87a' : 'var(--text-dim)',
                   transition: 'all 0.2s', cursor: 'pointer',
                 }}
               >

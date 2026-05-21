@@ -239,7 +239,7 @@ function PosterCard({ film, posterUrl, selected, dimmed, onPick }: {
             />
           </>
         ) : (
-          <div className="art" style={{ background: `linear-gradient(135deg,#1a1030,#0d0a20)`, display: 'grid', placeItems: 'center' }}>
+          <div className="art" style={{ background: `linear-gradient(135deg,#1f1606,#0d0a04)`, display: 'grid', placeItems: 'center' }}>
             <FilmIcon />
           </div>
         )}
@@ -272,9 +272,9 @@ function Brand() {
   return (
     <div className="brand">
       <svg className="brand-icon" viewBox="0 0 32 32" fill="none">
-        <rect width="32" height="32" rx="9" fill="rgba(180,167,255,0.14)"/>
-        <path d="M9 22 L16 10 L23 22" stroke="#b4a7ff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-        <circle cx="16" cy="10" r="2.2" fill="#b4a7ff"/>
+        <rect width="32" height="32" rx="9" fill="rgba(232,200,122,0.14)"/>
+        <path d="M9 22 L16 10 L23 22" stroke="#e8c87a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+        <circle cx="16" cy="10" r="2.2" fill="#e8c87a"/>
       </svg>
       <span className="brand-word">Soar<span className="brand-tv">TV</span></span>
     </div>
@@ -295,5 +295,5 @@ function ArrowIcon({ flip = false }: { flip?: boolean }) {
 }
 
 function FilmIcon() {
-  return <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(180,167,255,0.3)" strokeWidth="1.5" strokeLinecap="round"><rect x="2" y="2" width="20" height="20" rx="2.5"/><path d="M7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 17h5M17 7h5"/></svg>
+  return <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(232,200,122,0.3)" strokeWidth="1.5" strokeLinecap="round"><rect x="2" y="2" width="20" height="20" rx="2.5"/><path d="M7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 17h5M17 7h5"/></svg>
 }

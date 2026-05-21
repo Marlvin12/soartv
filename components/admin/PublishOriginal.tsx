@@ -136,7 +136,7 @@ export default function PublishOriginal({ originalId, initialData, onSaved }: Pr
             type="checkbox"
             checked={published}
             onChange={e => setPublished(e.target.checked)}
-            style={{ width: 16, height: 16, accentColor: '#b4a7ff', cursor: 'pointer' }}
+            style={{ width: 16, height: 16, accentColor: '#e8c87a', cursor: 'pointer' }}
           />
           <span style={{ fontSize: 14, color: 'var(--text-dim)' }}>Published — visible to all users</span>
         </label>
@@ -163,9 +163,9 @@ export default function PublishOriginal({ originalId, initialData, onSaved }: Pr
           onClick={addProduct}
           style={{
             marginTop: 16, display: 'inline-flex', alignItems: 'center', gap: 6,
-            fontSize: 13, fontWeight: 600, color: '#b4a7ff', padding: '8px 14px',
-            borderRadius: 10, border: '1px dashed rgba(180,167,255,0.4)',
-            background: 'rgba(180,167,255,0.06)', transition: 'background 0.2s',
+            fontSize: 13, fontWeight: 600, color: '#e8c87a', padding: '8px 14px',
+            borderRadius: 10, border: '1px dashed rgba(232,200,122,0.4)',
+            background: 'rgba(232,200,122,0.06)', transition: 'background 0.2s',
           }}
         >
           <PlusIcon /> Add product
@@ -191,7 +191,7 @@ export default function PublishOriginal({ originalId, initialData, onSaved }: Pr
           disabled={saving}
           style={{
             padding: '12px 28px', borderRadius: 12, fontSize: 14, fontWeight: 700,
-            background: saving ? 'rgba(180,167,255,0.3)' : 'linear-gradient(135deg,#7c5cfc,#b4a7ff)',
+            background: saving ? 'rgba(232,200,122,0.3)' : 'linear-gradient(135deg,#d9b45e,#e8c87a)',
             color: saving ? 'rgba(255,255,255,0.4)' : '#0a0a0e',
             border: 'none', cursor: saving ? 'not-allowed' : 'pointer', transition: 'opacity 0.2s',
             display: 'flex', alignItems: 'center', gap: 8,
@@ -272,7 +272,7 @@ function Input({ value, onChange, type = 'text', placeholder, required }: {
       type={type} value={value} required={required} placeholder={placeholder}
       onChange={e => onChange(e.target.value)}
       style={inputStyle}
-      onFocus={e => { e.currentTarget.style.borderColor = 'rgba(180,167,255,0.5)' }}
+      onFocus={e => { e.currentTarget.style.borderColor = 'rgba(232,200,122,0.5)' }}
       onBlur={e  => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)' }}
     />
   )

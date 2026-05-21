@@ -38,7 +38,7 @@ export default function AdminDashboard() {
         <Link href="/admin/originals/new" style={{
           display: 'inline-flex', alignItems: 'center', gap: 8,
           padding: '10px 20px', borderRadius: 12,
-          background: 'linear-gradient(135deg,#7c5cfc,#b4a7ff)',
+          background: 'linear-gradient(135deg,#d9b45e,#e8c87a)',
           color: '#0a0a0e', fontSize: 14, fontWeight: 700, textDecoration: 'none',
         }}>
           <PlusIcon /> New Original
@@ -58,7 +58,7 @@ export default function AdminDashboard() {
           <div style={{ padding: '32px 0', textAlign: 'center', color: 'var(--muted)' }}>Loading…</div>
         ) : originals.length === 0 ? (
           <div style={{ padding: '32px 0', textAlign: 'center', color: 'var(--muted)', fontSize: 14 }}>
-            No originals yet. <Link href="/admin/originals/new" style={{ color: '#b4a7ff' }}>Publish your first →</Link>
+            No originals yet. <Link href="/admin/originals/new" style={{ color: '#e8c87a' }}>Publish your first →</Link>
           </div>
         ) : (
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -87,7 +87,7 @@ export default function AdminDashboard() {
                     </Badge>
                   </Td>
                   <Td>
-                    <Link href={`/admin/originals/${o.id}`} style={{ fontSize: 12, color: '#b4a7ff', fontWeight: 600 }}>
+                    <Link href={`/admin/originals/${o.id}`} style={{ fontSize: 12, color: '#e8c87a', fontWeight: 600 }}>
                       Edit →
                     </Link>
                   </Td>

@@ -70,10 +70,10 @@ export default function Home({ answers, onRetake }: Props) {
 
       {/* archetype greeting */}
       {archetypeName && (
-        <div style={{ margin: '28px 56px 0', padding: '16px 22px', borderRadius: 16, background: 'linear-gradient(135deg,rgba(180,167,255,0.1),rgba(180,167,255,0.02))', border: '1px solid rgba(180,167,255,0.15)', display: 'flex', alignItems: 'center', gap: 14 }}>
-          <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#b4a7ff', boxShadow: '0 0 12px rgba(180,167,255,0.6)', flexShrink: 0 }} />
+        <div style={{ margin: '28px 56px 0', padding: '16px 22px', borderRadius: 16, background: 'linear-gradient(135deg,rgba(232,200,122,0.1),rgba(232,200,122,0.02))', border: '1px solid rgba(232,200,122,0.15)', display: 'flex', alignItems: 'center', gap: 14 }}>
+          <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#e8c87a', boxShadow: '0 0 12px rgba(232,200,122,0.6)', flexShrink: 0 }} />
           <span style={{ fontSize: 14, color: 'var(--text-dim)' }}>
-            Curated for <strong style={{ color: '#b4a7ff' }}>{archetypeName}</strong>
+            Curated for <strong style={{ color: '#e8c87a' }}>{archetypeName}</strong>
           </span>
         </div>
       )}

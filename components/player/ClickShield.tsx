@@ -51,8 +51,8 @@ export default function ClickShield({ resetKey, title = 'Tap to play', subtitle 
         style={{
           width: 96, height: 96, borderRadius: '50%',
           display: 'grid', placeItems: 'center',
-          background: 'radial-gradient(circle at 35% 35%, #fff, #b4a7ff 35%, #4c1d95 100%)',
-          boxShadow: '0 0 40px rgba(180,167,255,0.55), inset 0 0 24px rgba(255,255,255,0.18)',
+          background: 'radial-gradient(circle at 35% 35%, #fff, #e8c87a 35%, #5a4012 100%)',
+          boxShadow: '0 0 40px rgba(232,200,122,0.55), inset 0 0 24px rgba(255,255,255,0.18)',
           animation: 'shield-pulse 2.4s ease-in-out infinite',
           flexShrink: 0,
         }}
@@ -76,8 +76,8 @@ export default function ClickShield({ resetKey, title = 'Tap to play', subtitle 
 
       <style>{`
         @keyframes shield-pulse {
-          0%, 100% { transform: scale(1);    box-shadow: 0 0 40px rgba(180,167,255,0.55), inset 0 0 24px rgba(255,255,255,0.18); }
-          50%       { transform: scale(1.06); box-shadow: 0 0 60px rgba(180,167,255,0.75), inset 0 0 28px rgba(255,255,255,0.25); }
+          0%, 100% { transform: scale(1);    box-shadow: 0 0 40px rgba(232,200,122,0.55), inset 0 0 24px rgba(255,255,255,0.18); }
+          50%       { transform: scale(1.06); box-shadow: 0 0 60px rgba(232,200,122,0.75), inset 0 0 28px rgba(255,255,255,0.25); }
         }
         @keyframes shield-in {
           from { opacity: 0; }

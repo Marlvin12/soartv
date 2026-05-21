@@ -121,7 +121,7 @@ export default function Hero({ item, mood }: Props) {
             onClick={handleWatchlist}
             aria-label={inWatchlist ? 'Remove from watchlist' : 'Add to watchlist'}
             title={inWatchlist ? 'In your watchlist' : 'Add to watchlist'}
-            style={inWatchlist ? { background: 'rgba(180,167,255,0.22)', borderColor: 'rgba(180,167,255,0.45)', color: '#b4a7ff' } : undefined}
+            style={inWatchlist ? { background: 'rgba(232,200,122,0.22)', borderColor: 'rgba(232,200,122,0.45)', color: '#e8c87a' } : undefined}
           >
             <Icon name={inWatchlist ? 'check' : 'plus'} size={14}/>
           </button>

@@ -121,9 +121,9 @@ export default function WatchParty({ partyId, title }: Props) {
         style={{
           display: 'inline-flex', alignItems: 'center', gap: 8,
           padding: '10px 18px', borderRadius: 999,
-          background: open ? 'rgba(180,167,255,0.15)' : 'rgba(255,255,255,0.06)',
-          border: `1px solid ${open ? 'rgba(180,167,255,0.35)' : 'rgba(255,255,255,0.1)'}`,
-          color: open ? '#b4a7ff' : 'var(--text-dim)',
+          background: open ? 'rgba(232,200,122,0.15)' : 'rgba(255,255,255,0.06)',
+          border: `1px solid ${open ? 'rgba(232,200,122,0.35)' : 'rgba(255,255,255,0.1)'}`,
+          color: open ? '#e8c87a' : 'var(--text-dim)',
           fontSize: 13, fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s',
         }}
       >
@@ -153,9 +153,9 @@ export default function WatchParty({ partyId, title }: Props) {
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               {/* viewer count */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '4px 10px', borderRadius: 999, background: 'rgba(180,167,255,0.1)', border: '1px solid rgba(180,167,255,0.2)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '4px 10px', borderRadius: 999, background: 'rgba(232,200,122,0.1)', border: '1px solid rgba(232,200,122,0.2)' }}>
                 <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#4ade80', boxShadow: '0 0 6px #4ade80', animation: 'pulse-dot 1.8s ease-in-out infinite' }} />
-                <span style={{ fontSize: 12, fontWeight: 600, color: '#b4a7ff' }}>{viewers.length}</span>
+                <span style={{ fontSize: 12, fontWeight: 600, color: '#e8c87a' }}>{viewers.length}</span>
               </div>
               <button onClick={() => setOpen(false)} style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(255,255,255,0.06)', border: '1px solid var(--line)', display: 'grid', placeItems: 'center', cursor: 'pointer', color: 'var(--muted)' }}>
                 <XIcon />
@@ -199,7 +199,7 @@ export default function WatchParty({ partyId, title }: Props) {
                 outline: 'none', resize: 'none', maxHeight: 80, lineHeight: 1.45,
                 transition: 'border-color 0.2s',
               }}
-              onFocus={e  => { e.currentTarget.style.borderColor = 'rgba(180,167,255,0.4)' }}
+              onFocus={e  => { e.currentTarget.style.borderColor = 'rgba(232,200,122,0.4)' }}
               onBlur={e   => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)' }}
             />
             <button
@@ -207,7 +207,7 @@ export default function WatchParty({ partyId, title }: Props) {
               disabled={!user || !text.trim() || posting}
               style={{
                 width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
-                background: text.trim() && user ? 'linear-gradient(135deg,#7c5cfc,#b4a7ff)' : 'rgba(255,255,255,0.06)',
+                background: text.trim() && user ? 'linear-gradient(135deg,#d9b45e,#e8c87a)' : 'rgba(255,255,255,0.06)',
                 border: 'none', display: 'grid', placeItems: 'center', cursor: 'pointer',
                 color: text.trim() && user ? '#0a0a0e' : 'var(--muted)',
                 transition: 'background 0.2s',
@@ -243,11 +243,11 @@ function CommentBubble({ comment, isOwn }: { comment: Comment; isOwn: boolean })
   return (
     <div style={{ display: 'flex', gap: 8, flexDirection: isOwn ? 'row-reverse' : 'row', alignItems: 'flex-end' }}>
       {/* avatar */}
-      <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(180,167,255,0.2)', flexShrink: 0, overflow: 'hidden', display: 'grid', placeItems: 'center' }}>
+      <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(232,200,122,0.2)', flexShrink: 0, overflow: 'hidden', display: 'grid', placeItems: 'center' }}>
         {comment.photoURL
           // eslint-disable-next-line @next/next/no-img-element
           ? <img src={comment.photoURL} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          : <span style={{ fontSize: 11, fontWeight: 700, color: '#b4a7ff' }}>{(comment.displayName[0] ?? '?').toUpperCase()}</span>
+          : <span style={{ fontSize: 11, fontWeight: 700, color: '#e8c87a' }}>{(comment.displayName[0] ?? '?').toUpperCase()}</span>
         }
       </div>
 
@@ -259,8 +259,8 @@ function CommentBubble({ comment, isOwn }: { comment: Comment; isOwn: boolean })
         )}
         <div style={{
           padding: '8px 12px', borderRadius: isOwn ? '14px 14px 4px 14px' : '14px 14px 14px 4px',
-          background: isOwn ? 'rgba(180,167,255,0.2)' : 'rgba(255,255,255,0.06)',
-          border: isOwn ? '1px solid rgba(180,167,255,0.3)' : '1px solid rgba(255,255,255,0.06)',
+          background: isOwn ? 'rgba(232,200,122,0.2)' : 'rgba(255,255,255,0.06)',
+          border: isOwn ? '1px solid rgba(232,200,122,0.3)' : '1px solid rgba(255,255,255,0.06)',
           fontSize: 13, color: '#fff', lineHeight: 1.45, wordBreak: 'break-word',
         }}>
           {comment.text}
@@ -281,11 +281,11 @@ function ViewerPips({ viewers }: { viewers: Viewer[] }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', marginLeft: 2 }}>
       {shown.map((v, i) => (
-        <div key={v.uid} style={{ width: 20, height: 20, borderRadius: '50%', border: '1.5px solid rgba(10,11,18,0.9)', background: 'rgba(180,167,255,0.25)', overflow: 'hidden', marginLeft: i === 0 ? 0 : -6, display: 'grid', placeItems: 'center' }}>
+        <div key={v.uid} style={{ width: 20, height: 20, borderRadius: '50%', border: '1.5px solid rgba(10,11,18,0.9)', background: 'rgba(232,200,122,0.25)', overflow: 'hidden', marginLeft: i === 0 ? 0 : -6, display: 'grid', placeItems: 'center' }}>
           {v.photoURL
             // eslint-disable-next-line @next/next/no-img-element
             ? <img src={v.photoURL} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            : <span style={{ fontSize: 8, fontWeight: 700, color: '#b4a7ff' }}>{(v.displayName[0] ?? '?').toUpperCase()}</span>
+            : <span style={{ fontSize: 8, fontWeight: 700, color: '#e8c87a' }}>{(v.displayName[0] ?? '?').toUpperCase()}</span>
           }
         </div>
       ))}

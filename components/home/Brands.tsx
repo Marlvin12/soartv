@@ -6,7 +6,7 @@ const BRANDS = [
   { name: 'AMC+',       bg: 'linear-gradient(135deg,#7f1d1d,#000)',        color: '#fbbf24' },
   { name: 'STARZ',      bg: 'linear-gradient(135deg,#000,#1f2937)',         color: '#fff'    },
   { name: 'MAX',        bg: 'linear-gradient(135deg,#1e3a8a,#000)',         color: '#3b82f6' },
-  { name: 'Hallmark',   bg: 'linear-gradient(135deg,#831843,#4c0519)',      color: '#fbcfe8' },
+  { name: 'Hallmark',   bg: 'linear-gradient(135deg,#5a3a14,#4c0519)',      color: '#f5e3c0' },
   { name: 'Showtime',   bg: 'linear-gradient(135deg,#dc2626,#000)',         color: '#fff'    },
   { name: 'BritBox',    bg: 'linear-gradient(135deg,#1e40af,#1e3a8a)',      color: '#fde68a' },
   { name: 'Acorn',      bg: 'linear-gradient(135deg,#365314,#1a2e05)',      color: '#bef264' },

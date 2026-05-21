@@ -33,7 +33,7 @@ export default function ProfilePage() {
       <PageShell>
         <div style={{ textAlign: 'center', paddingTop: 100, color: 'var(--muted)' }}>
           <p style={{ fontSize: 16, marginBottom: 20 }}>Sign in to see your profile.</p>
-          <Link href="/" style={{ color: '#b4a7ff', fontWeight: 600, fontSize: 14 }}>← Take the survey</Link>
+          <Link href="/" style={{ color: '#e8c87a', fontWeight: 600, fontSize: 14 }}>← Take the survey</Link>
         </div>
       </PageShell>
     )
@@ -43,7 +43,7 @@ export default function ProfilePage() {
     <PageShell>
       {/* header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 18, padding: '40px 40px 0' }}>
-        <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'radial-gradient(circle at 30% 30%,#fff,#b4a7ff 40%,#4c1d95 100%)', boxShadow: '0 0 30px rgba(180,167,255,0.4)', overflow: 'hidden', flexShrink: 0 }}>
+        <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'radial-gradient(circle at 30% 30%,#fff,#e8c87a 40%,#5a4012 100%)', boxShadow: '0 0 30px rgba(232,200,122,0.4)', overflow: 'hidden', flexShrink: 0 }}>
           {user.photoURL && (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={user.photoURL} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -78,7 +78,7 @@ export default function ProfilePage() {
             style={{
               padding: '10px 20px', fontSize: 14, fontWeight: 500, cursor: 'pointer',
               color: tab === t ? '#fff' : 'var(--muted)',
-              borderBottom: tab === t ? '2px solid #b4a7ff' : '2px solid transparent',
+              borderBottom: tab === t ? '2px solid #e8c87a' : '2px solid transparent',
               textTransform: 'capitalize', transition: 'color 0.2s',
               marginBottom: -1,
             }}
@@ -118,11 +118,11 @@ function PageShell({ children }: { children: React.ReactNode }) {
 function EmptyInsights() {
   return (
     <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--muted)' }}>
-      <div style={{ width: 72, height: 72, borderRadius: '50%', background: 'rgba(180,167,255,0.1)', border: '1px solid rgba(180,167,255,0.2)', margin: '0 auto 20px', display: 'grid', placeItems: 'center' }}>
+      <div style={{ width: 72, height: 72, borderRadius: '50%', background: 'rgba(232,200,122,0.1)', border: '1px solid rgba(232,200,122,0.2)', margin: '0 auto 20px', display: 'grid', placeItems: 'center' }}>
         <OrbIcon />
       </div>
       <p style={{ fontSize: 16, marginBottom: 6, color: 'var(--text-dim)' }}>No resonance profile yet.</p>
-      <Link href="/" style={{ fontSize: 14, color: '#b4a7ff' }}>Take the survey →</Link>
+      <Link href="/" style={{ fontSize: 14, color: '#e8c87a' }}>Take the survey →</Link>
     </div>
   )
 }
@@ -181,5 +181,5 @@ function BackIcon() {
   return <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M10 12L6 8l4-4"/></svg>
 }
 function OrbIcon() {
-  return <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="10" stroke="rgba(180,167,255,0.5)" strokeWidth="1.5"/><circle cx="14" cy="14" r="4" fill="rgba(180,167,255,0.4)"/></svg>
+  return <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="10" stroke="rgba(232,200,122,0.5)" strokeWidth="1.5"/><circle cx="14" cy="14" r="4" fill="rgba(232,200,122,0.4)"/></svg>
 }

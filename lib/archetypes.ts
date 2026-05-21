@@ -144,28 +144,22 @@ export const ARCHETYPE_ORDER: ArchetypeId[] = [
   'protector', 'shapeshifter', 'warrior', 'dreamer',
 ]
 
-// ISO-ish week number — deterministic for every user that week.
-function getWeekSeed(): number {
-  const now   = new Date()
-  const start = new Date(now.getFullYear(), 0, 1)
-  return Math.floor((now.getTime() - start.getTime()) / (7 * 24 * 60 * 60 * 1000))
+// One iconic signature film per archetype — the fixed cards-survey deck. Each
+// film carries a full resonance profile in lib/resonance-content.ts.
+export const SIGNATURE_FILMS: Record<ArchetypeId, ArchetypeFilm> = {
+  hiddenOne:    { tmdbId: 489,    title: 'Good Will Hunting', type: 'movie' },
+  performer:    { tmdbId: 313369, title: 'La La Land',        type: 'movie' },
+  seeker:       { tmdbId: 603,    title: 'The Matrix',        type: 'movie' },
+  giver:        { tmdbId: 22881,  title: 'The Blind Side',    type: 'movie' },
+  protector:    { tmdbId: 284054, title: 'Black Panther',     type: 'movie' },
+  shapeshifter: { tmdbId: 10674,  title: 'Mulan',             type: 'movie' },
+  warrior:      { tmdbId: 1366,   title: 'Rocky',             type: 'movie' },
+  dreamer:      { tmdbId: 587,    title: 'Big Fish',          type: 'movie' },
 }
 
-// The active film for each archetype this week — same for all users.
-export function getWeeklyFilms(): Record<ArchetypeId, ArchetypeFilm> {
-  const seed = getWeekSeed()
-  const result = {} as Record<ArchetypeId, ArchetypeFilm>
-  ARCHETYPE_ORDER.forEach((id, idx) => {
-    const pool = FILM_POOLS[id]
-    result[id] = pool[(seed + idx) % pool.length]
-  })
-  return result
-}
-
-// The 8 survey films in order — one per archetype, rotated weekly.
+// The 8 survey films in order — one fixed signature film per archetype.
 export function getSurveyFilms(): (ArchetypeFilm & { archetypeId: ArchetypeId })[] {
-  const weekly = getWeeklyFilms()
-  return ARCHETYPE_ORDER.map(id => ({ ...weekly[id], archetypeId: id }))
+  return ARCHETYPE_ORDER.map(id => ({ ...SIGNATURE_FILMS[id], archetypeId: id }))
 }
 
 // ─── Integrated Paths ──────────────────────────────────────────────────────────

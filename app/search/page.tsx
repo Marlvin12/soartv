@@ -97,7 +97,7 @@ function SearchContent() {
               fontFamily: 'inherit', outline: 'none',
               transition: 'border-color 0.2s, background 0.2s',
             }}
-            onFocus={e => { e.currentTarget.style.borderColor = 'rgba(180,167,255,0.5)' }}
+            onFocus={e => { e.currentTarget.style.borderColor = 'rgba(232,200,122,0.5)' }}
             onBlur={e  => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)' }}
           />
           {q && (
@@ -161,7 +161,7 @@ function SearchTile({ item }: { item: Result }) {
           position: 'absolute', left: 0, right: 0, bottom: 0, padding: '14px 14px 12px',
           background: 'linear-gradient(to top,rgba(0,0,0,0.9) 0%,transparent 100%)',
         }}>
-          <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#b4a7ff' }}>
+          <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#e8c87a' }}>
             {item.media_type === 'tv' ? 'TV' : 'Movie'}
           </span>
           <p style={{ fontSize: 13, fontWeight: 600, color: '#fff', margin: '4px 0 0', lineHeight: 1.3 }}>{title}</p>

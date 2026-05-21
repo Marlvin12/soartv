@@ -6,8 +6,8 @@ export default function Loading() {
     }}>
       <div style={{
         width: 84, height: 84, borderRadius: '50%',
-        background: 'radial-gradient(circle at 30% 30%,#fff,#b4a7ff 35%,#4c1d95 100%)',
-        boxShadow: '0 0 50px rgba(180,167,255,0.45)',
+        background: 'radial-gradient(circle at 30% 30%,#fff,#e8c87a 35%,#5a4012 100%)',
+        boxShadow: '0 0 50px rgba(232,200,122,0.45)',
         animation: 'orb-pulse 2.4s ease-in-out infinite',
       }} />
     </div>

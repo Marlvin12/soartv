@@ -9,7 +9,7 @@ export default function NotFound() {
     }}>
       <div style={{
         width: 96, height: 96, borderRadius: '50%',
-        background: 'radial-gradient(circle at 30% 30%,#fff,#b4a7ff 35%,#4c1d95 100%)',
+        background: 'radial-gradient(circle at 30% 30%,#fff,#e8c87a 35%,#5a4012 100%)',
         opacity: 0.5, marginBottom: 20,
         animation: 'orb-pulse 2.4s ease-in-out infinite',
       }} />
@@ -28,9 +28,9 @@ export default function NotFound() {
         href="/"
         style={{
           padding: '12px 32px', borderRadius: 999,
-          background: 'linear-gradient(135deg,#7c5cfc,#b4a7ff)',
+          background: 'linear-gradient(135deg,#d9b45e,#e8c87a)',
           color: '#0a0a0e', fontSize: 14, fontWeight: 700,
-          textDecoration: 'none', boxShadow: '0 0 30px rgba(180,167,255,0.3)',
+          textDecoration: 'none', boxShadow: '0 0 30px rgba(232,200,122,0.3)',
         }}
       >
         Back to SoarTV

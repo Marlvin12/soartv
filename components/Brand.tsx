@@ -20,8 +20,8 @@ export default function Brand({ variant = 'default' }: Props) {
         />
         <defs>
           <linearGradient id="brandBg" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#a78bfa"/>
-            <stop offset="100%" stopColor="#6d28d9"/>
+            <stop offset="0%" stopColor="#dcc07e"/>
+            <stop offset="100%" stopColor="#a07c20"/>
           </linearGradient>
         </defs>
       </svg>

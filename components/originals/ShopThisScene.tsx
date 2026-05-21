@@ -43,9 +43,9 @@ export default function ShopThisScene({ originalId, title }: Props) {
         style={{
           display: 'inline-flex', alignItems: 'center', gap: 8,
           padding: '10px 20px', borderRadius: 999,
-          background: 'linear-gradient(135deg,rgba(180,167,255,0.2),rgba(180,167,255,0.08))',
-          border: '1px solid rgba(180,167,255,0.35)',
-          color: '#b4a7ff', fontSize: 13, fontWeight: 600, cursor: 'pointer',
+          background: 'linear-gradient(135deg,rgba(232,200,122,0.2),rgba(232,200,122,0.08))',
+          border: '1px solid rgba(232,200,122,0.35)',
+          color: '#e8c87a', fontSize: 13, fontWeight: 600, cursor: 'pointer',
           transition: 'background 0.2s, transform 0.15s',
         }}
         onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)' }}
@@ -54,7 +54,7 @@ export default function ShopThisScene({ originalId, title }: Props) {
         <BagIcon />
         Shop This Scene
         {products.length > 0 && (
-          <span style={{ background: '#b4a7ff', color: '#0a0a0e', fontSize: 10, fontWeight: 800, padding: '1px 6px', borderRadius: 999 }}>
+          <span style={{ background: '#e8c87a', color: '#0a0a0e', fontSize: 10, fontWeight: 800, padding: '1px 6px', borderRadius: 999 }}>
             {products.length}
           </span>
         )}
@@ -135,7 +135,7 @@ function ProductCard({ product }: { product: Product }) {
       target="_blank"
       rel="noopener noreferrer"
       style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', borderRadius: 16, overflow: 'hidden', background: 'var(--bg-card)', border: '1px solid var(--line)', transition: 'border-color 0.2s, transform 0.2s', cursor: 'pointer' }}
-      onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(180,167,255,0.35)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
+      onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(232,200,122,0.35)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
       onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--line)'; e.currentTarget.style.transform = 'translateY(0)' }}
     >
       {/* image */}
@@ -162,7 +162,7 @@ function ProductCard({ product }: { product: Product }) {
         {product.price && (
           <p style={{ fontSize: 12, color: 'var(--soar)', fontWeight: 600, margin: 0 }}>{product.price}</p>
         )}
-        <span style={{ display: 'inline-block', marginTop: 10, fontSize: 12, fontWeight: 600, padding: '5px 12px', borderRadius: 999, background: 'rgba(180,167,255,0.12)', border: '1px solid rgba(180,167,255,0.25)', color: '#b4a7ff' }}>
+        <span style={{ display: 'inline-block', marginTop: 10, fontSize: 12, fontWeight: 600, padding: '5px 12px', borderRadius: 999, background: 'rgba(232,200,122,0.12)', border: '1px solid rgba(232,200,122,0.25)', color: '#e8c87a' }}>
           Shop →
         </span>
       </div>

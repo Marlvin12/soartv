@@ -148,7 +148,7 @@ function LibraryTile({ href, imageUrl, title, progress }: {
         {/* progress bar */}
         {progress !== undefined && progress > 0 && (
           <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 3, background: 'rgba(255,255,255,0.15)' }}>
-            <div style={{ height: '100%', width: `${Math.min(100, Math.max(0, progress))}%`, background: '#b4a7ff' }} />
+            <div style={{ height: '100%', width: `${Math.min(100, Math.max(0, progress))}%`, background: '#e8c87a' }} />
           </div>
         )}
       </div>
@@ -159,12 +159,12 @@ function LibraryTile({ href, imageUrl, title, progress }: {
 function SignedOut() {
   return (
     <div style={{ textAlign: 'center', padding: '80px 24px', color: 'var(--muted)' }}>
-      <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'rgba(180,167,255,0.1)', border: '1px solid rgba(180,167,255,0.2)', margin: '0 auto 18px', display: 'grid', placeItems: 'center' }}>
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(180,167,255,0.6)" strokeWidth="1.5" strokeLinecap="round"><path d="M21 5H3v14h18V5z"/><path d="M3 9h18"/><path d="M9 5v4"/></svg>
+      <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'rgba(232,200,122,0.1)', border: '1px solid rgba(232,200,122,0.2)', margin: '0 auto 18px', display: 'grid', placeItems: 'center' }}>
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(232,200,122,0.6)" strokeWidth="1.5" strokeLinecap="round"><path d="M21 5H3v14h18V5z"/><path d="M3 9h18"/><path d="M9 5v4"/></svg>
       </div>
       <p style={{ fontSize: 17, color: '#fff', fontWeight: 500, margin: '0 0 6px' }}>Sign in to access your Library</p>
       <p style={{ fontSize: 14, color: 'var(--muted)', margin: '0 0 18px' }}>Your watchlist and continue-watching list sync across devices.</p>
-      <Link href="/" style={{ fontSize: 14, color: '#b4a7ff', fontWeight: 600 }}>← Take the survey</Link>
+      <Link href="/" style={{ fontSize: 14, color: '#e8c87a', fontWeight: 600 }}>← Take the survey</Link>
     </div>
   )
 }
