@@ -24,12 +24,8 @@ export default function MoviesPage() {
     <div className="home">
       <Nav />
       <div style={{ padding: '36px 56px 12px' }}>
-        <h1 style={{ fontSize: 'clamp(36px,5vw,56px)', fontWeight: 700, letterSpacing: '-0.03em', margin: '0 0 6px', color: '#fff' }}>
-          Movies
-        </h1>
-        <p style={{ fontSize: 15, color: 'var(--muted)', margin: 0 }}>
-          Trending, top-rated, and curated by genre.
-        </p>
+        <h1 className="page-title">Movies</h1>
+        <p className="page-title-sub">Trending, top-rated, and curated by genre.</p>
       </div>
       <BrowseShelves shelves={shelves} />
       <footer className="foot">

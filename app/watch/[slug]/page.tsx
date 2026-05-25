@@ -3,8 +3,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useParams, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import MoviePlayer   from '@/components/player/MoviePlayer'
-import TvPlayer      from '@/components/player/TvPlayer'
+import WhereToWatch  from '@/components/player/WhereToWatch'
 import WatchParty    from '@/components/player/WatchParty'
 import ShopThisScene from '@/components/originals/ShopThisScene'
 import { getIdFromSlug } from '@/lib/urls'
@@ -250,11 +249,8 @@ export default function WatchPage() {
           </div>
         )}
 
-        {/* player */}
-        {type === 'movie'
-          ? <MoviePlayer movieId={tmdbId} title={title} />
-          : <TvPlayer tvId={tmdbId} season={season} episode={episode} title={title} />
-        }
+        {/* Where to Watch — Apple-TV-style provider row replaces the iframe player */}
+        <WhereToWatch type={type} id={tmdbId} title={title} />
       </div>
 
       <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} />

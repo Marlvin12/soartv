@@ -13,6 +13,7 @@ import {
 } from '@/lib/archetypes'
 import type { ArchetypeId } from '@/lib/archetypes'
 import { ARCHETYPE_REVEAL, FILM_PROFILES } from '@/lib/resonance-content'
+import { brandLogoSources } from '@/lib/brand-logos'
 import type { ResonanceProfile } from '@/types'
 
 const GOLD = '#e8c87a'
@@ -255,7 +256,7 @@ export default function InsightsReveal({ profile, onEnter, onRetake }: Props) {
           <ChipRow items={arch.storyPreferences} />
           <div style={{ height: 16 }} />
           <MiniLabel>Brand Alignment</MiniLabel>
-          <ChipRow items={arch.brandAlignment} />
+          <BrandLogoRow items={arch.brandAlignment} />
         </div>
 
         {/* ── Resonance snapshot ── */}
@@ -294,7 +295,7 @@ export default function InsightsReveal({ profile, onEnter, onRetake }: Props) {
           <MiniLabel>Lifestyle Resonance</MiniLabel>
           <p style={{ ...bodyText, marginBottom: 18 }}>{aspProfile.lifestyle}</p>
           <MiniLabel>Brand Resonance</MiniLabel>
-          <ChipRow items={aspProfile.brands} strong />
+          <BrandLogoRow items={aspProfile.brands} strong />
         </div>
 
         {/* ── Body resonance ── */}
@@ -434,6 +435,61 @@ function ChipRow({ items, strong }: { items: string[]; strong?: boolean }) {
           {item}
         </span>
       ))}
+    </div>
+  )
+}
+
+// Renders brand entries as logo tiles (Clearbit-resolved) with the brand name
+// underneath. Falls back to the typographic chip if no logo URL is mapped or
+// the image fails to load.
+function BrandLogoRow({ items, strong }: { items: string[]; strong?: boolean }) {
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+      {items.map(item => (
+        <BrandTile key={item} name={item} strong={strong} />
+      ))}
+    </div>
+  )
+}
+
+function BrandTile({ name, strong }: { name: string; strong?: boolean }) {
+  const sources = brandLogoSources(name)
+  const [attempt, setAttempt] = useState(0)
+  const exhausted = attempt >= sources.length
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, width: 88 }}>
+      <div style={{
+        width: 72, height: 72, borderRadius: 16,
+        background: '#fff',
+        border: `1px solid ${strong ? 'rgba(232,200,122,0.4)' : 'var(--line)'}`,
+        boxShadow: strong
+          ? '0 4px 18px rgba(232,200,122,0.18), inset 0 1px 0 rgba(255,255,255,0.6)'
+          : '0 2px 12px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.6)',
+        display: 'grid', placeItems: 'center', overflow: 'hidden',
+      }}>
+        {exhausted ? (
+          <span style={{
+            fontSize: 26, fontWeight: 800, letterSpacing: '-0.02em',
+            color: '#0a0a0e', textAlign: 'center', lineHeight: 1,
+          }}>{name[0]?.toUpperCase() ?? '·'}</span>
+        ) : (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            key={attempt}
+            src={sources[attempt]}
+            alt={name}
+            onError={() => setAttempt(a => a + 1)}
+            style={{ width: '78%', height: '78%', objectFit: 'contain' }}
+          />
+        )}
+      </div>
+      <span style={{
+        fontSize: 11, fontWeight: 600, letterSpacing: '0.02em',
+        color: strong ? GOLD : 'var(--text-dim)', textAlign: 'center', lineHeight: 1.25,
+      }}>
+        {name}
+      </span>
     </div>
   )
 }

@@ -1,9 +1,21 @@
 import type { Metadata, Viewport } from 'next'
+import { Fraunces } from 'next/font/google'
 import './globals.css'
 import { AuthProvider } from '@/context/AuthContext'
 import { WatchlistProvider } from '@/context/WatchlistContext'
 import QueryProvider from '@/context/QueryProvider'
 import SWRegister from '@/components/SWRegister'
+
+// Display serif — self-hosted via next/font, exposed as the --font-display CSS
+// variable so globals.css can wire it into .serif-h / .serif-soft utilities and
+// the hero/onboarding/section-header classes. Variable axes (opsz, SOFT) are
+// dialled per-class via `font-variation-settings`.
+const fraunces = Fraunces({
+  subsets:  ['latin'],
+  axes:     ['opsz', 'SOFT'],
+  variable: '--font-display',
+  display:  'swap',
+})
 
 export const metadata: Metadata = {
   title:       'SoarTV — Tonight, tuned for you',
@@ -33,7 +45,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={fraunces.variable} suppressHydrationWarning>
       <body suppressHydrationWarning>
         <SWRegister />
         <QueryProvider>

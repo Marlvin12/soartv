@@ -12,12 +12,13 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import Brand from '@/components/Brand'
 import {
   ENTRY_QUESTION,
-  FIRST_REFLECTIONS,
   FOLLOW_UP_QUESTIONS,
-  SECOND_REFLECTIONS,
+  BODY_LED_FOLLOWUP_QUESTIONS,
   detectArchetype,
-  pickReflection,
+  runTurn1,
+  getSecondReflection,
 } from '@/lib/filmflow'
+import { matchBodyAreaWithKey, matchBodyAreaForResonance, BODY_RESONANCE } from '@/lib/body-resonance'
 import { ARCHETYPES } from '@/lib/archetypes'
 import type { ArchetypeId } from '@/lib/archetypes'
 
@@ -31,12 +32,17 @@ interface Props {
 }
 
 export default function VoiceSurvey({ onComplete, onSkip, onSwitchToCards }: Props) {
-  const [phase,     setPhase]     = useState<Phase>('ask1')
-  const [input1,    setInput1]    = useState('')
-  const [input2,    setInput2]    = useState('')
-  const [detected,  setDetected]  = useState<ArchetypeId | null>(null)
-  const [firstRef,  setFirstRef]  = useState('')
-  const [secondRef, setSecondRef] = useState('')
+  const [phase,        setPhase]        = useState<Phase>('ask1')
+  const [input1,       setInput1]       = useState('')
+  const [input2,       setInput2]       = useState('')
+  const [detected,     setDetected]     = useState<ArchetypeId | null>(null)
+  const [firstRef,     setFirstRef]     = useState('')
+  const [secondRef,    setSecondRef]    = useState('')
+  // Body-led path state: when the user names a body area on Turn 1, archetype
+  // resolution is deferred to Turn 2 and we mirror the body first.
+  const [mode,         setMode]         = useState<'body' | 'archetype'>('archetype')
+  const [bodyAreaKey,  setBodyAreaKey]  = useState<string | null>(null)
+  const [followUpQ,    setFollowUpQ]    = useState('')
   const [speaking,  setSpeaking]  = useState(false)
   const [slides,    setSlides]    = useState<Slide[]>([])
   const [slideIdx,  setSlideIdx]  = useState(0)
@@ -123,22 +129,47 @@ export default function VoiceSurvey({ onComplete, onSkip, onSwitchToCards }: Pro
     onComplete(arch)
   }, [onComplete])
 
-  /* Turn 1: detect the resonance signature, mirror it, ask the follow-up */
+  /* Turn 1: try body-led first; if the user named a body area, mirror the
+     body and defer archetype resolution to Turn 2. Otherwise fall through to
+     the archetype matcher and behave as before. */
   const submitFirst = () => {
     if (input1.trim().length < 2) return
-    const { archetype } = detectArchetype(input1)
-    const fr = pickReflection(FIRST_REFLECTIONS[archetype])
-    setDetected(archetype)
-    setFirstRef(fr)
+
+    const bodyHit = matchBodyAreaWithKey(input1)
+    const turn1   = runTurn1(input1, bodyHit)
+
+    setMode(turn1.detectionMode)
+    setFirstRef(turn1.firstReflection)
+    setFollowUpQ(turn1.followUpQ)
+    setBodyAreaKey(turn1.bodyAreaKey ?? null)
+    setDetected(turn1.archetype ?? null) // null when body-led
     setInput2('')
     setPhase('followup')
-    speak(`${fr} ${FOLLOW_UP_QUESTIONS[archetype]}`)
+    speak(`${turn1.firstReflection} ${turn1.followUpQ}`)
   }
 
-  /* Turn 2: close with the second reflection, then move to the reveal */
+  /* Turn 2: close with the second reflection, then move to the reveal.
+     - body-led mode: archetype was deferred, so resolve it from input2 and
+       fold the body's reorientation line into the closing.
+     - archetype-led mode: archetype already known; try to enrich the closing
+       with body resonance detected in input2. */
   const submitSecond = () => {
-    if (!detected || input2.trim().length < 2) return
-    const sr = pickReflection(SECOND_REFLECTIONS[detected])
+    if (input2.trim().length < 2) return
+
+    let archetype: ArchetypeId
+    let bodyArea = null
+
+    if (mode === 'body') {
+      archetype = detectArchetype(input2).archetype
+      bodyArea  = bodyAreaKey ? (BODY_RESONANCE[bodyAreaKey] ?? null) : null
+    } else {
+      if (!detected) return
+      archetype = detected
+      bodyArea  = matchBodyAreaForResonance(input2)
+    }
+
+    const sr = getSecondReflection(archetype, bodyArea, mode)
+    setDetected(archetype)
     setSecondRef(sr)
     setPhase('closing')
     speak(sr, () => setPhase('reveal'))
@@ -171,11 +202,19 @@ export default function VoiceSurvey({ onComplete, onSkip, onSwitchToCards }: Pro
       </div>
       <div className="vs-overlay" />
 
-      {/* Nav */}
+      {/* Nav — the unified flow is voice → cards → insights. The "Skip conversation"
+          button below is the escape hatch for users who'd rather go straight to
+          the poster picks; it lands them in the survey without an entryArchetype. */}
       <div className="vs-nav">
         <Brand />
-        <div style={{ display: 'flex', gap: 16 }}>
-          <button className="onb-skip" onClick={onSwitchToCards}>Switch to cards</button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <span style={{
+            fontSize: 11, fontWeight: 600, letterSpacing: '0.14em',
+            textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)',
+          }}>
+            Step 1 of 2 · Resonance intake
+          </span>
+          <button className="onb-skip" onClick={onSwitchToCards}>Skip conversation</button>
           <button className="onb-skip" onClick={onSkip}>Skip</button>
         </div>
       </div>
@@ -228,10 +267,10 @@ export default function VoiceSurvey({ onComplete, onSkip, onSwitchToCards }: Pro
         )}
 
         {/* ── Turn 2 ── */}
-        {phase === 'followup' && detected && (
+        {phase === 'followup' && (
           <>
             <p className="vs-reflection">{firstRef}</p>
-            <p className="vs-q">{FOLLOW_UP_QUESTIONS[detected]}</p>
+            <p className="vs-q">{followUpQ || (detected ? FOLLOW_UP_QUESTIONS[detected] : (bodyAreaKey ? BODY_LED_FOLLOWUP_QUESTIONS[bodyAreaKey] : ''))}</p>
             <div className="vs-form">
               <textarea
                 className="vs-input"

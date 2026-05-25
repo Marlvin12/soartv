@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
 import { useWatchlist } from '@/context/WatchlistContext'
 import { doc, onSnapshot } from 'firebase/firestore'
+import { getIdTokenResult } from 'firebase/auth'
 import { db } from '@/lib/firebase'
 import { ARCHETYPES, resolveArchetype } from '@/lib/archetypes'
 import InsightsReveal from '@/components/resonance/InsightsReveal'
@@ -15,8 +16,29 @@ type Tab = 'insights' | 'watchlist' | 'settings'
 export default function ProfilePage() {
   const { user, signOut, loading } = useAuth()
   const { watchlistItems }         = useWatchlist()
-  const [tab,     setTab]    = useState<Tab>('insights')
+  const [tab,     setTab]     = useState<Tab>('insights')
   const [profile, setProfile] = useState<ResonanceProfile | null>(null)
+  // Admin status comes from a Firebase custom claim (role === 'admin'). When
+  // present, surface an Admin tab in the profile that deep-links to /admin.
+  // The /admin route still does its own check, so this tab is purely cosmetic.
+  const [isAdmin, setIsAdmin] = useState(false)
+
+  useEffect(() => {
+    if (!user) { setIsAdmin(false); return }
+    let cancelled = false
+    getIdTokenResult(user, /* forceRefresh */ false)
+      .then(r => {
+        if (cancelled) return
+        if (r.claims.role === 'admin') { setIsAdmin(true); return }
+        // Cached token didn't carry the claim — refresh once in case it was granted
+        // after the user signed in.
+        return getIdTokenResult(user, true).then(fresh => {
+          if (!cancelled) setIsAdmin(fresh.claims.role === 'admin')
+        })
+      })
+      .catch(() => { if (!cancelled) setIsAdmin(false) })
+    return () => { cancelled = true }
+  }, [user])
 
   useEffect(() => {
     if (!user) return
@@ -86,6 +108,35 @@ export default function ProfilePage() {
             {t}
           </button>
         ))}
+        {isAdmin && (
+          // Admin "tab" is a deep-link to /admin — styled to match the other
+          // tabs so it reads as part of the row, but navigates rather than
+          // switching local state. Marked with the gold accent + dot so it's
+          // visually distinct from the per-user tabs.
+          <Link
+            href="/admin"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 7,
+              padding: '10px 20px', fontSize: 14, fontWeight: 500,
+              color: 'var(--soar)',
+              borderBottom: '2px solid transparent',
+              textTransform: 'capitalize', textDecoration: 'none',
+              marginBottom: -1,
+              marginLeft: 'auto',  /* push admin to the right edge */
+              transition: 'color 0.2s, border-color 0.2s',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(232,200,122,0.4)' }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = 'transparent' }}
+          >
+            <span style={{
+              width: 6, height: 6, borderRadius: '50%',
+              background: 'var(--soar)',
+              boxShadow: '0 0 8px rgba(232,200,122,0.6)',
+            }} />
+            Admin
+            <span style={{ fontSize: 11, opacity: 0.7, marginLeft: 2 }}>↗</span>
+          </Link>
+        )}
       </div>
 
       {/* content */}

@@ -129,13 +129,21 @@ export default function PosterSurvey({ onComplete, onSkip }: Props) {
 
   return (
     <div className="onb" style={{ minHeight: '100vh' }}>
-      {/* top bar */}
+      {/* top bar — Step 2 of 2 in the unified onboarding (Step 1 is voice intake) */}
       <div className="onb-top">
         <Brand />
-        <div className="onb-progress">
-          {QUESTIONS.map((_, i) => (
-            <span key={i} className={i < step ? 'done' : i === step ? 'active' : ''} />
-          ))}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <span style={{
+            fontSize: 11, fontWeight: 600, letterSpacing: '0.14em',
+            textTransform: 'uppercase', color: 'var(--muted)',
+          }}>
+            Step 2 of 2 · Picks
+          </span>
+          <div className="onb-progress">
+            {QUESTIONS.map((_, i) => (
+              <span key={i} className={i < step ? 'done' : i === step ? 'active' : ''} />
+            ))}
+          </div>
         </div>
         <button className="onb-skip" onClick={onSkip}>Skip</button>
       </div>

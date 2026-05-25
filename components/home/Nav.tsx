@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Icon from '@/components/Icon'
@@ -20,10 +21,21 @@ export default function Nav({ onRetake }: Props) {
   const { user } = useAuth()
   const pathname = usePathname()
 
+  // Surface a 1px bottom line once the user has scrolled past the gradient
+  // fade. Without this, long pages lose the visual separator between the nav
+  // and the content underneath when the gradient stops being effective.
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   const isActive = (href: string) => href === '/' ? pathname === '/' : pathname.startsWith(href)
 
   return (
-    <nav className="nav">
+    <nav className={`nav${scrolled ? ' nav--scrolled' : ''}`}>
       <div className="nav-brand"><Brand variant="nav"/></div>
       <div className="nav-links">
         {NAV_LINKS.map(({ label, href }) => (

@@ -24,12 +24,8 @@ export default function ShowsPage() {
     <div className="home">
       <Nav />
       <div style={{ padding: '36px 56px 12px' }}>
-        <h1 style={{ fontSize: 'clamp(36px,5vw,56px)', fontWeight: 700, letterSpacing: '-0.03em', margin: '0 0 6px', color: '#fff' }}>
-          TV Shows
-        </h1>
-        <p style={{ fontSize: 15, color: 'var(--muted)', margin: 0 }}>
-          Series worth your evening — trending, top-rated, and by genre.
-        </p>
+        <h1 className="page-title">TV Shows</h1>
+        <p className="page-title-sub">Series worth your evening — trending, top-rated, and by genre.</p>
       </div>
       <BrowseShelves shelves={shelves} />
       <footer className="foot">

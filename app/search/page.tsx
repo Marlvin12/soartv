@@ -76,9 +76,7 @@ function SearchContent() {
     <div className="home">
       <Nav />
       <div style={{ padding: '36px 56px 8px' }}>
-        <h1 style={{ fontSize: 'clamp(32px,4.5vw,48px)', fontWeight: 700, letterSpacing: '-0.025em', margin: '0 0 18px', color: '#fff' }}>
-          Search
-        </h1>
+        <h1 className="page-title" style={{ marginBottom: 18 }}>Search</h1>
         <div style={{ position: 'relative', maxWidth: 640 }}>
           <span style={{ position: 'absolute', left: 18, top: '50%', transform: 'translateY(-50%)', color: 'var(--muted)' }}>
             <SearchIcon />
